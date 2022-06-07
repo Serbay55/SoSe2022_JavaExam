@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Datenbankverbindung {
-    private static final String VERB = "jdbc:sqlite:logindb";
+    private static final String VERB = "jdbc:sqlite:login.db";
 
     public static Connection getVerbindung() throws SQLException{
         try{
