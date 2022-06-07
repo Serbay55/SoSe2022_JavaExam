@@ -12,7 +12,7 @@ public class Datenbankverbindung {
         try{
             Class.forName("org.sqlite.JDBC");
             return DriverManager.getConnection(VERB);
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
@@ -36,4 +36,10 @@ public class Datenbankverbindung {
 			e.printStackTrace();
 		}
     }
+    
+
 }
+
+
+
+
