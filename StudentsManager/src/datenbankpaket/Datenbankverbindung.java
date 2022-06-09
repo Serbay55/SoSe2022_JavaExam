@@ -6,23 +6,28 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Datenbankverbindung {
+		
+	
     private static final String VERB = "jdbc:sqlite:login.db";
 
     public static Connection getVerbindung() throws SQLException{
         try{
             Class.forName("org.sqlite.JDBC");
             return DriverManager.getConnection(VERB);
+            
+        } catch (SQLException e) {
+        	e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
     }
     private static Connection connection;
     
-    public synchronized static void runSQL(String query) throws SQLException {
+    public synchronized static void runSQL(String query) throws SQLException {  // für alles andere
     	connection.createStatement().execute(query);
     }
-    public static ResultSet runSQLquery(String query) throws SQLException {
+    public static ResultSet runSQLquery(String query) throws SQLException { //zum selecten
     	return connection.createStatement().executeQuery(query);
     }
     
@@ -35,9 +40,9 @@ public class Datenbankverbindung {
     	} catch (SQLException e) {
 			e.printStackTrace();
 		}
-    }
     
-
+    
+	}
 }
 
 
