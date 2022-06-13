@@ -9,5 +9,6 @@
       <Button layoutX="14.0" layoutY="109.0" mnemonicParsing="false" onAction="#delCourse" prefHeight="49.0" prefWidth="124.0" text="Kurs löschen" />
       <Button layoutX="14.0" layoutY="181.0" mnemonicParsing="false" onAction="#addStudent" prefHeight="49.0" prefWidth="124.0" text="Student hinzufügen" />
       <Button layoutX="14.0" layoutY="251.0" mnemonicParsing="false" onAction="#exmStudent" prefHeight="49.0" prefWidth="124.0" text="Student exmatrikulieren" />
+      <Button layoutX="14.0" layoutY="320.0" mnemonicParsing="false" onAction="#addCourse" prefHeight="49.0" prefWidth="124.0" text="Kurs registrieren" />
    </children>
 </AnchorPane>
