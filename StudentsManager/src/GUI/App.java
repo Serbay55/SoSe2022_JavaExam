@@ -20,9 +20,10 @@ public class App extends Application {
 		boolean is_new = !Files.exists(Paths.get("login.db"));
         try{
             if(is_new) {
-            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Kurs (kurs_name varchar(30));");
+            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Kurs (id int, kurs_name varchar(30));");
             	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Studenten (id varchar(30), vorname varchar(30), nachname varchar(30), kursid int );");
             	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS enums ( id varchar(30), value int );");
+            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS enumstud (id varchar(50, value int );");
             	Datenbankverbindung.runSQL("INSERT INTO enumsStud (id, value) VALUES (\"Studenten\", 1)");
                 Datenbankverbindung.runSQL("INSERT INTO enums (id, value) VALUES (\"Kurs\", 1)");
             }

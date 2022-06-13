@@ -20,7 +20,6 @@ public class Controller {
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT value FROM enums WHERE id = \""+ tablename +"\"");
 		res.next();
 		return res.getLong("value");
-		
 	}
 	
 	public void listCourse(ActionEvent e) {
@@ -32,16 +31,59 @@ public class Controller {
 		System.out.println("deleted");
 	}
 	
-	public void addStudent(ActionEvent e) {
-		System.out.println("student added");
+	
+	public void addStudent(ActionEvent e) throws IOException {
+		//System.out.println("student added");
+		Stage StageRegStud;
+		Parent rooter = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("regstud.fxml"));
+		Scene SceneRegStud = new Scene(rooter);
+		StageRegStud = (Stage) ((Node)e.getSource()).getScene().getWindow();
+		StageRegStud.setScene(SceneRegStud);
+		StageRegStud.setTitle("Registering Student");
+		StageRegStud.show();
+		
+	}
+	
+	@FXML
+	public TextField vinp;
+	public TextField nninp;
+	public TextField coursesubmit;
+	
+	public void addStudentNew(ActionEvent x) {
+		String vn;
+		vn = vinp.getText();
+		char[] ch = vn.toCharArray();
+		StringBuilder strbuildregstud = new StringBuilder();
+		for(char c : ch) {
+			if(Character.isAlphabetic(c)) {
+				strbuildregstud.append(c);
+			}
+		}
+		vn = strbuildregstud.toString();
+		
+		String nn;
+		nn = nninp.getText();
+		char[] es = nn.toCharArray();
+		StringBuilder strbuildregstud2 = new StringBuilder();
+		for(char e : es) {
+			if(Character.isAlphabetic(e)) {
+				strbuildregstud2.append(e);
+			}
+		}
+		nn = strbuildregstud2.toString();
+		
+		try {
+			Datenbankverbindung.runSQL("INSERT INTO Studenten (vorname, nachname) VALUES (\""+vn+"\", \""+nn+"\")");
+		} catch (SQLException z) {
+			throw new RuntimeException(z);
+		}
 	}
 	
 	public void exmStudent(ActionEvent e) {
 		System.out.println("exmatriculated");
 	}
 	
-	@FXML
-	private TextField coursesubmit;
+
 	
 	public void addCourseNew(ActionEvent i) {
 		String coursename;
