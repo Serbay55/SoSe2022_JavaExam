@@ -1,6 +1,7 @@
 package backend;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import datenbankpaket.Datenbankverbindung;
@@ -14,6 +15,13 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 
 public class Controller {
+	
+	public static long nextidoftable(String tablename) throws SQLException {
+		ResultSet res = Datenbankverbindung.runSQLquery("SELECT value FROM enums WHERE id = \""+ tablename +"\"");
+		res.next();
+		return res.getLong("value");
+		
+	}
 	
 	public void listCourse(ActionEvent e) {
 		System.out.println("Hello World");
