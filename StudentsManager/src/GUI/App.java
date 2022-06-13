@@ -20,7 +20,7 @@ public class App extends Application {
             e.printStackTrace();
         }
 
-
+        
         Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
 
         Scene scene = new Scene(root);
