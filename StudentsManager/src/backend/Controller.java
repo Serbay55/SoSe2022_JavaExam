@@ -38,6 +38,14 @@ public class Controller {
 	public void addCourseNew(ActionEvent i) {
 		String coursename;
 		coursename = coursesubmit.getText();
+		char[] ch = coursename.toCharArray();
+		StringBuilder strbuild = new StringBuilder();
+		for(char c : ch) {
+			if(Character.isAlphabetic(c) || Character.isDigit(c)) {
+				strbuild.append(c);
+			}
+		}
+		coursename = strbuild.toString();
 		try {
 			Datenbankverbindung.runSQL("INSERT INTO Kurs (kurs_name) VALUES (\""+coursename+"\")");
 		} catch (SQLException x) {
