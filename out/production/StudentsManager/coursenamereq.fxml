@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="149.0" prefWidth="280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="282.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
    <children>
       <TextField fx:id="coursesubmit" alignment="CENTER" layoutX="66.0" layoutY="62.0" />
       <Text layoutX="56.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bitte einen Kursnamen angeben" />
       <Button alignment="CENTER" layoutX="109.0" layoutY="96.0" mnemonicParsing="false" onAction="#addCourseNew" text="Einfügen" textOverrun="CENTER_ELLIPSIS" />
+      <TableView layoutX="255.0" layoutY="21.0" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn editable="false" prefWidth="75.0" text="room_id" />
+          <TableColumn editable="false" prefWidth="75.0" text="room" />
+        </columns>
+      </TableView>
+      <Button layoutX="102.0" layoutY="129.0" mnemonicParsing="false" onAction="#openHomescreen" text="Main Menu" />
+      <ComboBox fx:id="courseroomselect" layoutX="66.0" layoutY="161.0" prefWidth="150.0" />
+      <Button layoutX="14.0" layoutY="161.0" mnemonicParsing="false" onAction="#addCourseRoomToCourse" text="select" />
+      <ChoiceBox fx:id="myChoiceBox" layoutX="66.0" layoutY="209.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

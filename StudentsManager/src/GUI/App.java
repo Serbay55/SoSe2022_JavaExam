@@ -2,6 +2,7 @@ package GUI;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import backend.Controller;
@@ -20,20 +21,20 @@ public class App extends Application {
 		boolean is_new = !Files.exists(Paths.get("login.db"));
         try{
             if(is_new) {
-            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Kurs (course_id INTEGER PRIMARY KEY, kurs_name varchar(30));");
-            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Studenten (person_id INTEGER PRIMARY KEY, vorname varchar(30), nachname varchar(30), kursid int );");
-            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS enums ( id varchar(30), value int );");
-            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS enumstud (id varchar(50, value int );");
-            	Datenbankverbindung.runSQL("INSERT INTO enumsStud (id, value) VALUES (\"Studenten\", 1)");
-                Datenbankverbindung.runSQL("INSERT INTO enums (id, value) VALUES (\"Kurs\", 1)");
+            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Kurs (course_id INTEGER PRIMARY KEY, kurs_name varchar(30), kurs_raum varchar(30));");
+            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Studenten (person_id INTEGER PRIMARY KEY, vorname varchar(30), nachname varchar(30), course_id int, Java_Skill int );");
+            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Kursraeume (room_id INTEGER PRIMARY KEY, raum varchar(5));");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B048\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B040\");");
             }
         } catch (SQLException e){
             e.printStackTrace();
         }
         //System.out.println(Controller.nextidoftable("Kurs"));
+        
     
 
-        
+        Controller.scheiße();
         Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
 
         Scene scene = new Scene(root);
