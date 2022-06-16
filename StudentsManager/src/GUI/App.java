@@ -22,7 +22,7 @@ public class App extends Application {
         try{
             if(is_new) {
             	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Kurs (course_id INTEGER PRIMARY KEY, kurs_name varchar(30), kurs_raum varchar(30));");
-            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Studenten (person_id INTEGER PRIMARY KEY, vorname varchar(30), nachname varchar(30), course_id int, Java_Skill int );");
+            	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Studenten (person_id INTEGER PRIMARY KEY, vorname varchar(30), nachname varchar(30), firma varchar(30), Java_Skill int, kurs varchar(30) );");
             	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Kursraeume (room_id INTEGER PRIMARY KEY, raum varchar(5));");
             	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B048\");");
             	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B040\");");
@@ -35,6 +35,7 @@ public class App extends Application {
     
 
         Controller.scheiße();
+        
         Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
 
         Scene scene = new Scene(root);

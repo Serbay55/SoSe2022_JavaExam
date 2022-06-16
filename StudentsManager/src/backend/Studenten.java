@@ -5,14 +5,14 @@ public class Studenten {
 	String nachname;
 	String firma;
 	String kurs;
-	Kursraum raum;
 	int JSkill;
 	
-	public Studenten(String vorname, String nachname, String firma, int JSkill) {
+	public Studenten(String vorname, String nachname, String firma, int JSkill, String kurs) {
 		this.vorname = vorname;
 		this.nachname = nachname;
 		this.firma = firma;
 		this.JSkill = JSkill;
+		this.kurs = kurs;
 	}
 	
 	public String getVorname() {
@@ -38,12 +38,6 @@ public class Studenten {
 	}
 	public void setKurs(String kurs) {
 		this.kurs = kurs;
-	}
-	public Kursraum getRaum() {
-		return raum;
-	}
-	public void setRaum(Kursraum raum) {
-		this.raum = raum;
 	}
 	public int getJSkill() {
 		return JSkill;

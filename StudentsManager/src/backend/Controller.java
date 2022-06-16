@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 
 import datenbankpaket.Datenbankverbindung;
 import datenbankpaket.PersistentQueries;
+import GUI.App;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,13 +47,21 @@ public class Controller{
 	@FXML private TableColumn<Studenten, String> lastNameColumn;
 	@FXML public TableColumn<Studenten, String> companyColumn2;
 	@FXML private TableColumn<Studenten, Integer> jskill;
-	@FXML private TableColumn<Studenten, Kursraum> roomColumn;
+	@FXML private TableColumn<Studenten, String> kursColumn;
+	@FXML private ChoiceBox<String> myChoiceBox;
 	
 	private static List<Studenten> studentenliste;
+	private static List<String> kursraumliste;
 	
-	@FXML public void initialize() {
+	@FXML public void initialize() throws SQLException {
+		ResultSet kurse = Datenbankverbindung.runSQLquery("SELECT kurs_name FROM Kurs");
+		if(myChoiceBox != null) {
+			myChoiceBox.getItems().addAll(test());
+		}
+		
 		if(studentenliste == null) {
-			studentenliste = new ArrayList();
+			studentenliste = new ArrayList<Studenten>();
+			tableview.getItems().addAll(studentenlister());
 		}
 		if(tableview != null) {
 			tableview.getItems().addAll(studentenliste);
@@ -60,7 +69,9 @@ public class Controller{
 			lastNameColumn.setCellValueFactory(new PropertyValueFactory<Studenten, String>("nachname"));
 			companyColumn2.setCellValueFactory(new PropertyValueFactory<Studenten, String>("firma"));
 			jskill.setCellValueFactory(new PropertyValueFactory<Studenten, Integer>("JSkill"));
+			kursColumn.setCellValueFactory(new PropertyValueFactory<Studenten, String>("kurs"));
 		}
+		
 		
 	}
 	
@@ -69,6 +80,16 @@ public class Controller{
 		res.next();
 		return res.getLong("value");
 	}*/
+	public static List<String> test() throws SQLException{
+		ResultSet rese = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
+		List<String> rooms = new ArrayList<String>();
+		while(rese.next()) {
+			rooms.add(rese.getString("kurs_name"));
+		}
+		return rooms;
+		
+	}
+	
 	public static List<Kursraum> scheiße() throws SQLException {
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kursraeume");
 		List<Kursraum> räume = new ArrayList<Kursraum>(); 
@@ -81,11 +102,11 @@ public class Controller{
 		}
 		return räume;
 	}
-	public static List<Studenten> scheiße2() throws SQLException {
-		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kursraeume");
+	public static List<Studenten> studentenlister() throws SQLException {
+		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten");
 		List<Studenten> stdlist = new ArrayList<Studenten>(); 
 		while(res.next()) {
-			stdlist.add(new Studenten(null, null, null, 0));
+			stdlist.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs")));
 		}
 		return stdlist;
 	}
@@ -93,11 +114,20 @@ public class Controller{
 	
 	
 	public void listCourse(ActionEvent e) throws SQLException {
-		ResultSet res1 = Datenbankverbindung.runSQLquery("SELECT vorname FROM Studenten");
-		List<Studenten> studies = new ArrayList<Studenten>();
+		ResultSet res1 = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
+		List<Kurs> kurse = new ArrayList<Kurs>();
 		while(res1.next()) {
-			studies.add(new Studenten(res1.getString("vorname"), res1.getString("nachname"), res1.getString("nachname"), res1.getInt("Java_Skill")));
+			kurse.add(new Kurs(res1.getString("kurs_name"), res1.getString("kurs_raum")));
 		}
+	}
+	
+	public static List<Kurs> courseselect() throws SQLException {
+		ResultSet res1 = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
+		List<Kurs> kurse = new ArrayList<Kurs>();
+		while(res1.next()) {
+			kurse.add(new Kurs(res1.getString("kurs_name"), res1.getString("kurs_raum")));
+		}
+		return kurse;
 	}
 	
 	public void delCourse(ActionEvent e) {
@@ -125,6 +155,17 @@ public class Controller{
 		
 	}
 	
+	public void starter(ActionEvent x) throws IOException {
+		Stage newStage;
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
+		Scene newScene = new Scene(root);
+		newStage = (Stage) ((Node)x.getSource()).getScene().getWindow();
+		newStage.setScene(newScene);
+		newStage.setTitle("Main Menu");
+		newStage.show();
+		
+	}
+	
 
 	
 
@@ -141,7 +182,9 @@ public class Controller{
 	}
 
 
-	public void addStudentNew(ActionEvent x) {
+	public void addStudentNew(ActionEvent x) throws SQLException {
+		String selection = myChoiceBox.getValue();
+		String companyname = companyColumn.getText();
 		int jskill = (int)javaskill.getValue();
 		String vn;
 		vn = vinp.getText();
@@ -165,11 +208,11 @@ public class Controller{
 		}
 		nn = strbuildregstud2.toString();
 		try {
-			Datenbankverbindung.runSQL("INSERT INTO Studenten (vorname, nachname, Java_Skill) VALUES (\""+vn+"\", \""+nn+"\", \""+jskill+"\");");
+			Datenbankverbindung.runSQL("INSERT INTO Studenten (vorname, nachname, Java_Skill, firma, kurs) VALUES (\""+vn+"\", \""+nn+"\", \""+jskill+"\", \""+companyname+"\", \""+selection+"\");");
 		} catch (SQLException z) {
 			throw new RuntimeException(z);
 		}
-		studentenliste.add(new Studenten(vn, nn, companyColumn.getText().toString(), jskill));
+		studentenliste.add(new Studenten(vn, nn, companyColumn.getText().toString(), jskill, selection));
 
 	}
 	
@@ -217,7 +260,7 @@ public class Controller{
 		}*/
 	}
 	
-	public void openHomescreen(ActionEvent e) throws IOException {
+	public void openHomescreen(ActionEvent e) throws IOException, SQLException {
 		Stage newStage;
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
 		Scene newScene = new Scene(root);

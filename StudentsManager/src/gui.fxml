@@ -18,6 +18,7 @@
           <TableColumn fx:id="lastNameColumn" prefWidth="75.0" text="Nachname" />
             <TableColumn fx:id="companyColumn2" prefWidth="75.0" text="Firma" />
             <TableColumn fx:id="jskill" prefWidth="75.0" text="Java Skill" />
+            <TableColumn fx:id="kursColumn" prefWidth="75.0" text="Kurs" />
         </columns>
       </TableView>
    </children>
