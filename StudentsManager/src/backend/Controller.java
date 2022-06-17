@@ -43,20 +43,27 @@ public class Controller{
 	public Slider javaskill;
 	public Label MyLabel;
 	public TextField companyColumn;
-	@FXML private TableView<Studenten> tableview;
+	@FXML public TableView<Studenten> tableview;
 	@FXML private TableColumn<Studenten, String> firstNameColumn;
 	@FXML private TableColumn<Studenten, String> lastNameColumn;
 	@FXML public TableColumn<Studenten, String> companyColumn2;
 	@FXML private TableColumn<Studenten, Integer> jskill;
 	@FXML private TableColumn<Studenten, String> kursColumn;
+	@FXML private TableColumn<Studenten, Integer> identificator;
 	@FXML private ChoiceBox<String> myChoiceBox;
+	@FXML private ChoiceBox<String> MMCBOX;
 	@FXML private javafx.scene.control.Button submitter;
+	@FXML private javafx.scene.control.Button cdeleterbutton;
 	
 	private static List<Studenten> studentenliste;
 	private static List<String> kursraumliste;
+	public static Parent rootNew = null;
 	
 	@FXML public void initialize() throws SQLException {
 		ResultSet kurse = Datenbankverbindung.runSQLquery("SELECT kurs_name FROM Kurs");
+		if(MMCBOX != null) {
+			MMCBOX.getItems().addAll(test());
+		}
 		if(myChoiceBox != null) {
 			myChoiceBox.getItems().addAll(test());
 		}
@@ -72,6 +79,7 @@ public class Controller{
 			companyColumn2.setCellValueFactory(new PropertyValueFactory<Studenten, String>("firma"));
 			jskill.setCellValueFactory(new PropertyValueFactory<Studenten, Integer>("JSkill"));
 			kursColumn.setCellValueFactory(new PropertyValueFactory<Studenten, String>("kurs"));
+			identificator.setCellValueFactory(new PropertyValueFactory<Studenten, Integer>("identificator"));
 		}
 		
 		
@@ -82,6 +90,10 @@ public class Controller{
 		res.next();
 		return res.getLong("value");
 	}*/
+
+	
+	
+	
 	public static List<String> test() throws SQLException{
 		ResultSet rese = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
 		List<String> rooms = new ArrayList<String>();
@@ -108,7 +120,7 @@ public class Controller{
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten");
 		List<Studenten> stdlist = new ArrayList<Studenten>(); 
 		while(res.next()) {
-			stdlist.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs")));
+			stdlist.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs"), res.getInt("person_id")));
 		}
 		return stdlist;
 	}
@@ -132,10 +144,20 @@ public class Controller{
 		return kurse;
 	}
 	
-	public void delCourse(ActionEvent e) {
-		System.out.println("deleted");
+	public void delCourse(ActionEvent e) throws IOException {
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursedeleter.fxml"));
+		Stage steg = new Stage();
+		steg.setScene(new Scene(root));
+		steg.showAndWait();
 	}
 	
+	public void delCourseAction(ActionEvent e) throws SQLException {
+		String courseselection = myChoiceBox.getValue();
+		Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE kurs = \""+courseselection+"\"");
+		Datenbankverbindung.runSQL("DELETE FROM Kurs WHERE kurs_name = \""+courseselection+"\"");
+		Stage stage = (Stage) cdeleterbutton.getScene().getWindow();
+		stage.close();
+	}
 	
 	public void addStudent(ActionEvent e) throws IOException, SQLException {
 		//System.out.println("student added");
@@ -174,7 +196,10 @@ public class Controller{
 	
 
 	
-
+	public void stagecloser(ActionEvent e) {
+		Stage stage = (Stage) submitter.getScene().getWindow();
+		stage.close();
+	}
 	
 	
 
@@ -194,35 +219,50 @@ public class Controller{
 		int jskill = (int)javaskill.getValue();
 		String vn;
 		vn = vinp.getText();
-		char[] ch = vn.toCharArray();
-		StringBuilder strbuildregstud = new StringBuilder();
-		for(char c : ch) {
-			if(Character.isAlphabetic(c)) {
-				strbuildregstud.append(c);
-			}
-		}
-		vn = strbuildregstud.toString();
-		
 		String nn;
 		nn = nninp.getText();
-		char[] es = nn.toCharArray();
-		StringBuilder strbuildregstud2 = new StringBuilder();
-		for(char e : es) {
-			if(Character.isAlphabetic(e)) {
-				strbuildregstud2.append(e);
+		if(selection != null && companyname != null && vn != null && nn != null) {
+			char[] ch = vn.toCharArray();
+			StringBuilder strbuildregstud = new StringBuilder();
+			for(char c : ch) {
+				if(Character.isAlphabetic(c) || Character.isSpace(c)) {
+					strbuildregstud.append(c);
+				}
 			}
+			vn = strbuildregstud.toString();
+			
+			//
+			char[] es = nn.toCharArray();
+			StringBuilder strbuildregstud2 = new StringBuilder();
+			for(char e : es) {
+				if(Character.isAlphabetic(e) || Character.isSpace(e)) {
+					strbuildregstud2.append(e);
+				}
+			}
+			nn = strbuildregstud2.toString();
+			char[] cname = companyname.toCharArray();
+			StringBuilder strbuildcname = new StringBuilder();
+			for(char y : cname) {
+				if(Character.isAlphabetic(y) || Character.isDigit(y) || Character.isSpace(y)) {
+					strbuildcname.append(y);
+				}
+			}
+			companyname = strbuildcname.toString();
+			try {
+				Datenbankverbindung.runSQL("INSERT INTO Studenten (vorname, nachname, Java_Skill, firma, kurs) VALUES (\""+vn+"\", \""+nn+"\", \""+jskill+"\", \""+companyname+"\", \""+selection+"\");");
+			} catch (SQLException z) {
+				throw new RuntimeException(z);
+			}
+			studentenliste.add(new Studenten(vn, nn, companyColumn.getText().toString(), jskill, selection));
+			
+			Stage stage = (Stage) submitter.getScene().getWindow();
+			stage.close();
+		} else {
+			Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("initstudentfailure.fxml"));
+			Stage steg = new Stage();
+			steg.setScene(new Scene(root));
+			steg.showAndWait();
 		}
-		nn = strbuildregstud2.toString();
-		try {
-			Datenbankverbindung.runSQL("INSERT INTO Studenten (vorname, nachname, Java_Skill, firma, kurs) VALUES (\""+vn+"\", \""+nn+"\", \""+jskill+"\", \""+companyname+"\", \""+selection+"\");");
-		} catch (SQLException z) {
-			throw new RuntimeException(z);
-		}
-		studentenliste.add(new Studenten(vn, nn, companyColumn.getText().toString(), jskill, selection));
-		
-		Stage stage = (Stage) submitter.getScene().getWindow();
-		stage.close();
-		
 
 	}
 	
@@ -234,10 +274,35 @@ public class Controller{
 			studentenliste = new ArrayList<Studenten>();
 			tableview.getItems().addAll(studentenlister());
 		}
-		for(Studenten c: studentenliste) {
-			System.out.println(c.vorname);
+		
+		MMCBOX = null;
+		if(MMCBOX == null) {
+			MMCBOX = new ChoiceBox<String>(FXCollections.observableArrayList(test()));
 		}
 		
+		
+	}
+	
+	public List<Studenten> sortedList() throws SQLException{
+		String mmcbox = MMCBOX.getValue();
+		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten WHERE kurs = \""+mmcbox+"\"");
+		List<Studenten> stdlist = new ArrayList<Studenten>(); 
+		while(res.next()) {
+			stdlist.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs"), res.getInt("person_id")));
+		}
+		return stdlist;
+		
+		
+	}
+	
+	public void sortList(ActionEvent e) throws SQLException {
+		studentenliste.removeAll(studentenliste);
+		studentenliste = null;
+		if(studentenliste == null) {
+			tableview.getItems().clear();
+			studentenliste = new ArrayList<Studenten>();
+			tableview.getItems().addAll(sortedList());
+		}
 	}
 	
 
@@ -258,6 +323,9 @@ public class Controller{
 		} catch (SQLException x) {
 			throw new RuntimeException(x);
 		}
+		
+		Stage stag = (Stage) submitter.getScene().getWindow();
+		stag.close();
 	}
 	
 	
@@ -291,7 +359,6 @@ public class Controller{
 		newStage.setScene(newScene);
 		newStage.setTitle("Main Menu");
 		newStage.show();
-		refreshTable(e);
 		initialize();
 		
 		

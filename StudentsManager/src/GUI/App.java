@@ -33,12 +33,12 @@ public class App extends Application {
         }
         //System.out.println(Controller.nextidoftable("Kurs"));
         
-    
+        
 
         Controller.scheiße();
         
         Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
-
+        backend.Controller.rootNew = root;
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("University Management");

@@ -5,6 +5,7 @@ public class Studenten {
 	String nachname;
 	String firma;
 	String kurs;
+	int identificator;
 	int JSkill;
 	
 	public Studenten(String vorname, String nachname, String firma, int JSkill, String kurs) {
@@ -15,6 +16,23 @@ public class Studenten {
 		this.kurs = kurs;
 	}
 	
+	public Studenten(String vorname, String nachname, String firma, int JSkill, String kurs, int identificator) {
+		this.vorname = vorname;
+		this.nachname = nachname;
+		this.firma = firma;
+		this.JSkill = JSkill;
+		this.kurs = kurs;
+		this.identificator = identificator;
+	}
+	
+	public int getIdentificator() {
+		return identificator;
+	}
+
+	public void setIdentificator(int identificator) {
+		this.identificator = identificator;
+	}
+
 	public String getVorname() {
 		return vorname;
 	}
