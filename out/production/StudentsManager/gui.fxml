@@ -10,7 +10,7 @@
       <Button layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#listCourse" prefHeight="49.0" prefWidth="124.0" text="Kurse auflisten" />
       <Button layoutX="14.0" layoutY="109.0" mnemonicParsing="false" onAction="#delCourse" prefHeight="49.0" prefWidth="124.0" text="Kurs löschen" />
       <Button layoutX="14.0" layoutY="181.0" mnemonicParsing="false" onAction="#addStudent" prefHeight="49.0" prefWidth="124.0" text="Student hinzufügen" />
-      <Button layoutX="14.0" layoutY="251.0" mnemonicParsing="false" onAction="#exmStudent" prefHeight="49.0" prefWidth="124.0" text="Student exmatrikulieren" />
+      <Button layoutX="14.0" layoutY="251.0" mnemonicParsing="false" onAction="#refreshTable" prefHeight="49.0" prefWidth="124.0" text="Tabelle aktualisieren" />
       <Button layoutX="14.0" layoutY="320.0" mnemonicParsing="false" onAction="#addCourse" prefHeight="49.0" prefWidth="124.0" text="Kurs registrieren" />
       <TableView fx:id="tableview" layoutX="191.0" layoutY="34.0" prefHeight="457.0" prefWidth="425.0">
         <columns>
@@ -20,6 +20,9 @@
             <TableColumn fx:id="jskill" prefWidth="75.0" text="Java Skill" />
             <TableColumn fx:id="kursColumn" prefWidth="75.0" text="Kurs" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
    </children>
 </AnchorPane>

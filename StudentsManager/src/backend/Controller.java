@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import datenbankpaket.Datenbankverbindung;
 import datenbankpaket.PersistentQueries;
 import GUI.App;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,6 +50,7 @@ public class Controller{
 	@FXML private TableColumn<Studenten, Integer> jskill;
 	@FXML private TableColumn<Studenten, String> kursColumn;
 	@FXML private ChoiceBox<String> myChoiceBox;
+	@FXML private javafx.scene.control.Button submitter;
 	
 	private static List<Studenten> studentenliste;
 	private static List<String> kursraumliste;
@@ -137,19 +139,23 @@ public class Controller{
 	
 	public void addStudent(ActionEvent e) throws IOException, SQLException {
 		//System.out.println("student added");
-		Stage StageRegStud;
+		/*Stage StageRegStud;
 		Parent rooter = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("regstud.fxml"));
 		Scene SceneRegStud = new Scene(rooter);
 		StageRegStud = (Stage) ((Node)e.getSource()).getScene().getWindow();
 		StageRegStud.setScene(SceneRegStud);
 		StageRegStud.setTitle("Registering Student");
-		StageRegStud.show();
-		ArrayList List = new ArrayList();
+		StageRegStud.show();*/
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("regstud.fxml"));
+		Stage steg = new Stage();
+		steg.setScene(new Scene(root));
+		steg.showAndWait();
+		/*ArrayList List = new ArrayList();
 		ResultSet s = Datenbankverbindung.runSQLquery("SELECT COUNT(course_id) FROM Kurs;");
 		for (int i = 1; i< s.getRow(); i++) {
 			List.add(Datenbankverbindung.runSQLquery("SELECT kurs_name FROM Kurs WHERE course_id = \""+i+"\""));
 			System.out.println(List.get(i));
-		}
+		}*/
 		
 		
 		
@@ -182,7 +188,7 @@ public class Controller{
 	}
 
 
-	public void addStudentNew(ActionEvent x) throws SQLException {
+	public void addStudentNew(ActionEvent x) throws Exception {
 		String selection = myChoiceBox.getValue();
 		String companyname = companyColumn.getText();
 		int jskill = (int)javaskill.getValue();
@@ -213,13 +219,26 @@ public class Controller{
 			throw new RuntimeException(z);
 		}
 		studentenliste.add(new Studenten(vn, nn, companyColumn.getText().toString(), jskill, selection));
+		
+		Stage stage = (Stage) submitter.getScene().getWindow();
+		stage.close();
+		
 
 	}
 	
-	public void exmStudent(ActionEvent e) {
-		System.out.println("exmatriculated");
+	public void refreshTable(ActionEvent e) throws Exception {
+		studentenliste.removeAll(studentenliste);
+		studentenliste = null;
+		if(studentenliste == null) {
+			tableview.getItems().clear();
+			studentenliste = new ArrayList<Studenten>();
+			tableview.getItems().addAll(studentenlister());
+		}
+		for(Studenten c: studentenliste) {
+			System.out.println(c.vorname);
+		}
+		
 	}
-	
 	
 
 	
@@ -244,13 +263,17 @@ public class Controller{
 	
 	
 	public void addCourse(ActionEvent e) throws IOException, SQLException {
-		Stage newStage;
+		/*Stage newStage;
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursenamereq.fxml"));
 		Scene newScene = new Scene(root);
 		newStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
 		newStage.setScene(newScene);
 		newStage.setTitle("Input");
-		newStage.show();
+		newStage.show();*/
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursenamereq.fxml"));
+		Stage steg = new Stage();
+		steg.setScene(new Scene(root));
+		steg.showAndWait();
 		/*String coursename;
 		coursename = coursesubmit.getText();
 		try {
@@ -260,7 +283,7 @@ public class Controller{
 		}*/
 	}
 	
-	public void openHomescreen(ActionEvent e) throws IOException, SQLException {
+	public void openHomescreen(ActionEvent e) throws Exception {
 		Stage newStage;
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
 		Scene newScene = new Scene(root);
@@ -268,7 +291,12 @@ public class Controller{
 		newStage.setScene(newScene);
 		newStage.setTitle("Main Menu");
 		newStage.show();
+		refreshTable(e);
+		initialize();
+		
+		
 	}
+	
 
 
 }

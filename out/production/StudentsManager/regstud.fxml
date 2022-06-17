@@ -14,7 +14,7 @@
       <TextField fx:id="nninp" layoutX="92.0" layoutY="90.0" />
       <Text layoutX="140.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vorname" />
       <Text layoutX="135.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nachname" />
-      <Button layoutX="274.0" layoutY="282.0" mnemonicParsing="false" onAction="#addStudentNew" text="Submit" />
+      <Button fx:id="submitter" layoutX="274.0" layoutY="282.0" mnemonicParsing="false" onAction="#addStudentNew" text="Submit" />
       <Slider fx:id="javaskill" layoutX="94.0" layoutY="240.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <Text layoutX="143.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="JavaSkill" />
       <Button layoutX="236.0" layoutY="323.0" mnemonicParsing="false" onAction="#openHomescreen" text="Return to Main Menu" />
