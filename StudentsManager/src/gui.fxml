@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="796.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
    <children>
-      <Button layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#listCourse" prefHeight="49.0" prefWidth="124.0" text="Kurse auflisten" />
+      <Button layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#renderdelStudent" prefHeight="49.0" prefWidth="124.0" text="Student exmatrikulieren" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
       <Button layoutX="14.0" layoutY="109.0" mnemonicParsing="false" onAction="#delCourse" prefHeight="49.0" prefWidth="124.0" text="Kurs löschen" />
       <Button layoutX="14.0" layoutY="181.0" mnemonicParsing="false" onAction="#addStudent" prefHeight="49.0" prefWidth="124.0" text="Student hinzufügen" />
       <Button layoutX="14.0" layoutY="251.0" mnemonicParsing="false" onAction="#refreshTable" prefHeight="49.0" prefWidth="124.0" text="Tabelle aktualisieren" />
@@ -27,6 +27,6 @@
          </columnResizePolicy>
       </TableView>
       <ChoiceBox fx:id="MMCBOX" layoutX="191.0" layoutY="502.0" prefWidth="150.0" />
-      <Button layoutX="359.0" layoutY="502.0" mnemonicParsing="false" onAction="#sortList" text="Sortieren" />
+      <Button layoutX="359.0" layoutY="502.0" mnemonicParsing="false" onAction="#sortList" text="Kurs filtern" />
    </children>
 </AnchorPane>

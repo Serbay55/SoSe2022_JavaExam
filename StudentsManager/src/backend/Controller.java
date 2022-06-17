@@ -43,6 +43,7 @@ public class Controller{
 	public Slider javaskill;
 	public Label MyLabel;
 	public TextField companyColumn;
+	@FXML private TextField student_id_input;
 	@FXML public TableView<Studenten> tableview;
 	@FXML private TableColumn<Studenten, String> firstNameColumn;
 	@FXML private TableColumn<Studenten, String> lastNameColumn;
@@ -125,14 +126,21 @@ public class Controller{
 		return stdlist;
 	}
 	
+	public void renderdelStudent(ActionEvent e) throws IOException {
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("studentdeleter.fxml"));
+		Stage steg = new Stage();
+		steg.setScene(new Scene(root));
+		steg.showAndWait();
+	}
 	
-	
-	public void listCourse(ActionEvent e) throws SQLException {
-		ResultSet res1 = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
-		List<Kurs> kurse = new ArrayList<Kurs>();
-		while(res1.next()) {
-			kurse.add(new Kurs(res1.getString("kurs_name"), res1.getString("kurs_raum")));
+	public void delStudent(ActionEvent e) throws SQLException {
+		String id_selection = student_id_input.getText();
+		if(id_selection != null) {
+			Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE person_id =\""+id_selection+"\"");
+			Stage stage = (Stage) submitter.getScene().getWindow();
+			stage.close();
 		}
+		
 	}
 	
 	public static List<Kurs> courseselect() throws SQLException {
