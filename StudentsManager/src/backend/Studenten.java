@@ -5,6 +5,14 @@ public class Studenten {
 	String nachname;
 	String firma;
 	String kurs;
+	String raumkurs;
+	public String getRaumkurs() {
+		return raumkurs;
+	}
+
+	public void setRaumkurs(String raumkurs) {
+		this.raumkurs = raumkurs;
+	}
 	int identificator;
 	int JSkill;
 	
@@ -23,6 +31,16 @@ public class Studenten {
 		this.JSkill = JSkill;
 		this.kurs = kurs;
 		this.identificator = identificator;
+	}
+	
+	public Studenten(String vorname, String nachname, String firma, int JSkill, String kurs, int identificator, String raumkurs) {
+		this.vorname = vorname;
+		this.nachname = nachname;
+		this.firma = firma;
+		this.JSkill = JSkill;
+		this.kurs = kurs;
+		this.identificator = identificator;
+		this.raumkurs = raumkurs;
 	}
 	
 	public int getIdentificator() {

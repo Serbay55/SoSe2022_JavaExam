@@ -6,14 +6,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="796.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="849.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
    <children>
       <Button layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#renderdelStudent" prefHeight="49.0" prefWidth="124.0" text="Student exmatrikulieren" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
       <Button layoutX="14.0" layoutY="109.0" mnemonicParsing="false" onAction="#delCourse" prefHeight="49.0" prefWidth="124.0" text="Kurs löschen" />
       <Button layoutX="14.0" layoutY="181.0" mnemonicParsing="false" onAction="#addStudent" prefHeight="49.0" prefWidth="124.0" text="Student hinzufügen" />
       <Button layoutX="14.0" layoutY="251.0" mnemonicParsing="false" onAction="#refreshTable" prefHeight="49.0" prefWidth="124.0" text="Tabelle aktualisieren" />
       <Button layoutX="14.0" layoutY="320.0" mnemonicParsing="false" onAction="#addCourse" prefHeight="49.0" prefWidth="124.0" text="Kurs registrieren" />
-      <TableView fx:id="tableview" layoutX="191.0" layoutY="34.0" prefHeight="457.0" prefWidth="565.0">
+      <TableView fx:id="tableview" layoutX="191.0" layoutY="34.0" prefHeight="457.0" prefWidth="642.0">
         <columns>
           <TableColumn fx:id="firstNameColumn" prefWidth="75.0" text="Vorname" />
           <TableColumn fx:id="lastNameColumn" prefWidth="75.0" text="Nachname" />
@@ -21,6 +21,7 @@
             <TableColumn fx:id="jskill" prefWidth="75.0" text="Java Skill" />
             <TableColumn fx:id="kursColumn" prefWidth="75.0" text="Kurs" />
             <TableColumn fx:id="identificator" prefWidth="75.0" text="ID" />
+            <TableColumn fx:id="kursraumColumn" prefWidth="75.0" text="Kurs Raum" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -28,5 +29,6 @@
       </TableView>
       <ChoiceBox fx:id="MMCBOX" layoutX="191.0" layoutY="502.0" prefWidth="150.0" />
       <Button layoutX="359.0" layoutY="502.0" mnemonicParsing="false" onAction="#sortList" text="Kurs filtern" />
+      <Button layoutX="15.0" layoutY="385.0" mnemonicParsing="false" onAction="#openHomescreen" text="Refresh Hauptmenü" />
    </children>
 </AnchorPane>

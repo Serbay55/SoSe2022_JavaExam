@@ -36,6 +36,19 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 
 public class Controller{
+	/*
+	 * 
+	 * Sehr geehrter Herr Sebastian Damm,
+	 * 
+	 * falls Sie sich wundern, warum ich nur ein Controller habe,
+	 * da habe ich nichts zu rechtfertigen. Ich bin nämlich heimlich
+	 * Real Mitarbeiter. Bei uns heißt es "Einmal hin, alles drin"
+	 * 
+	 * viel Spaß beim lesen.
+	 * 
+	 * ne wirklich haben Sie verständnis ich musste so einiges Alleine machen
+	 */
+	
 	@FXML
 	public TextField vinp;
 	public TextField nninp;
@@ -51,17 +64,21 @@ public class Controller{
 	@FXML private TableColumn<Studenten, Integer> jskill;
 	@FXML private TableColumn<Studenten, String> kursColumn;
 	@FXML private TableColumn<Studenten, Integer> identificator;
+	@FXML private TableColumn<Studenten, String> kursraumColumn;
 	@FXML private ChoiceBox<String> myChoiceBox;
 	@FXML private ChoiceBox<String> MMCBOX;
+	@FXML private ChoiceBox<String> roomcb;
 	@FXML private javafx.scene.control.Button submitter;
 	@FXML private javafx.scene.control.Button cdeleterbutton;
 	
 	private static List<Studenten> studentenliste;
-	private static List<String> kursraumliste;
 	public static Parent rootNew = null;
 	
 	@FXML public void initialize() throws SQLException {
 		ResultSet kurse = Datenbankverbindung.runSQLquery("SELECT kurs_name FROM Kurs");
+		if(roomcb != null) {
+			roomcb.getItems().addAll(courseroomslist());
+		}
 		if(MMCBOX != null) {
 			MMCBOX.getItems().addAll(test());
 		}
@@ -81,6 +98,7 @@ public class Controller{
 			jskill.setCellValueFactory(new PropertyValueFactory<Studenten, Integer>("JSkill"));
 			kursColumn.setCellValueFactory(new PropertyValueFactory<Studenten, String>("kurs"));
 			identificator.setCellValueFactory(new PropertyValueFactory<Studenten, Integer>("identificator"));
+			kursraumColumn.setCellValueFactory(new PropertyValueFactory<Studenten, String>("raumkurs"));
 		}
 		
 		
@@ -93,15 +111,23 @@ public class Controller{
 	}*/
 
 	
-	
+	public static List<String> courseroomslist() throws SQLException {
+		ResultSet rese = Datenbankverbindung.runSQLquery("SELECT * FROM Kursraeume");
+		List<String> rooms = new ArrayList<String>();
+		while(rese.next()) {
+			rooms.add(rese.getString("raum"));
+		}
+		return rooms;
+		
+	}
 	
 	public static List<String> test() throws SQLException{
 		ResultSet rese = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
-		List<String> rooms = new ArrayList<String>();
+		List<String> courses = new ArrayList<String>();
 		while(rese.next()) {
-			rooms.add(rese.getString("kurs_name"));
+			courses.add(rese.getString("kurs_name"));
 		}
-		return rooms;
+		return courses;
 		
 	}
 	
@@ -117,11 +143,21 @@ public class Controller{
 		}
 		return räume;
 	}
+	
+	public static String Kursgetter(String s) throws SQLException {
+		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs WHERE kurs_name = \""+s+"\"");
+		String k = res.getString("kurs_raum");
+		return k;
+		
+	}
+	
 	public static List<Studenten> studentenlister() throws SQLException {
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten");
-		List<Studenten> stdlist = new ArrayList<Studenten>(); 
+		List<Studenten> stdlist = new ArrayList<Studenten>();
+		String kursraum;
 		while(res.next()) {
-			stdlist.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs"), res.getInt("person_id")));
+			kursraum = Kursgetter(res.getString("kurs"));
+			stdlist.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs"), res.getInt("person_id"), kursraum));
 		}
 		return stdlist;
 	}
@@ -135,6 +171,14 @@ public class Controller{
 	
 	public void delStudent(ActionEvent e) throws SQLException {
 		String id_selection = student_id_input.getText();
+		char[] ch  = id_selection.toCharArray();
+		StringBuilder strbuild = new StringBuilder();
+		for(char c: ch) {
+			if(Character.isDigit(c)) {
+				strbuild.append(c);
+			}
+		}
+		id_selection = strbuild.toString();
 		if(id_selection != null) {
 			Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE person_id =\""+id_selection+"\"");
 			Stage stage = (Stage) submitter.getScene().getWindow();
@@ -313,9 +357,22 @@ public class Controller{
 		}
 	}
 	
+	public static boolean räumecheck(String s) throws SQLException{
+		ResultSet rs = Datenbankverbindung.runSQLquery("SELECT kurs_raum FROM Kurs WHERE kurs_raum = \""+s+"\"");
+		List<String> belegteKursräume = new ArrayList<String>();
+		while(rs.next()) {
+			belegteKursräume.add(rs.getString("kurs_raum"));
+		}
+		boolean x = false;
+		if(belegteKursräume.size() == 0) {
+			x = true;
+		}
+		return x;
+	}
 
 	
-	public void addCourseNew(ActionEvent i) {
+	public void addCourseNew(ActionEvent i) throws IOException, SQLException {
+		String kursraum = roomcb.getValue();
 		String coursename;
 		coursename = coursesubmit.getText();
 		char[] ch = coursename.toCharArray();
@@ -326,14 +383,23 @@ public class Controller{
 			}
 		}
 		coursename = strbuild.toString();
-		try {
-			Datenbankverbindung.runSQL("INSERT INTO Kurs (kurs_name) VALUES (\""+coursename+"\")");
-		} catch (SQLException x) {
-			throw new RuntimeException(x);
+		boolean dbcheck = räumecheck(kursraum);
+		if(kursraum != null && coursename != null && dbcheck) {
+			try {
+				Datenbankverbindung.runSQL("INSERT INTO Kurs (kurs_name, kurs_raum) VALUES (\""+coursename+"\", \""+kursraum+"\")");
+			} catch (SQLException x) {
+				throw new RuntimeException(x);
+			}
+			Stage stag = (Stage) submitter.getScene().getWindow();
+			stag.close();
+		} else {
+			Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("initstudentfailure.fxml"));
+			Stage steg = new Stage();
+			steg.setScene(new Scene(root));
+			steg.showAndWait();
 		}
 		
-		Stage stag = (Stage) submitter.getScene().getWindow();
-		stag.close();
+		
 	}
 	
 	
@@ -365,9 +431,9 @@ public class Controller{
 		Scene newScene = new Scene(root);
 		newStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
 		newStage.setScene(newScene);
-		newStage.setTitle("Main Menu");
+		newStage.setTitle("University Management");
 		newStage.show();
-		initialize();
+		refreshTable(e);
 		
 		
 	}
