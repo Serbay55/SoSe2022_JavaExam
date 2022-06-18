@@ -338,9 +338,11 @@ public class Controller{
 	public List<Studenten> sortedList() throws SQLException{
 		String mmcbox = MMCBOX.getValue();
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten WHERE kurs = \""+mmcbox+"\"");
-		List<Studenten> stdlist = new ArrayList<Studenten>(); 
+		List<Studenten> stdlist = new ArrayList<Studenten>();
+		String kursraum;
 		while(res.next()) {
-			stdlist.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs"), res.getInt("person_id")));
+			kursraum = Kursgetter(res.getString("kurs"));
+			stdlist.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs"), res.getInt("person_id"), kursraum));
 		}
 		return stdlist;
 		
@@ -369,6 +371,19 @@ public class Controller{
 		}
 		return x;
 	}
+	
+	public static boolean kurscheck(String s) throws SQLException{
+		ResultSet rs = Datenbankverbindung.runSQLquery("SELECT kurs_name FROM Kurs WHERE kurs_name = \""+s+"\"");
+		List<String> belegtekursnamen = new ArrayList<String>();
+		while(rs.next()) {
+			belegtekursnamen.add(rs.getString("kurs_name"));
+		}
+		boolean x = false;
+		if(belegtekursnamen.size() == 0) {
+			x = true;
+		}
+		return x;
+	}
 
 	
 	public void addCourseNew(ActionEvent i) throws IOException, SQLException {
@@ -383,8 +398,9 @@ public class Controller{
 			}
 		}
 		coursename = strbuild.toString();
+		boolean kursnamecheck = kurscheck(coursename);
 		boolean dbcheck = räumecheck(kursraum);
-		if(kursraum != null && coursename != null && dbcheck) {
+		if(kursraum != null && coursename != null && dbcheck && kursnamecheck) {
 			try {
 				Datenbankverbindung.runSQL("INSERT INTO Kurs (kurs_name, kurs_raum) VALUES (\""+coursename+"\", \""+kursraum+"\")");
 			} catch (SQLException x) {
