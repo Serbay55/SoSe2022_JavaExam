@@ -80,10 +80,10 @@ public class Controller{
 			roomcb.getItems().addAll(courseroomslist());
 		}
 		if(MMCBOX != null) {
-			MMCBOX.getItems().addAll(test());
+			MMCBOX.getItems().addAll(listcoursenames());
 		}
 		if(myChoiceBox != null) {
-			myChoiceBox.getItems().addAll(test());
+			myChoiceBox.getItems().addAll(listcoursenames());
 		}
 		
 		if(studentenliste == null) {
@@ -103,12 +103,6 @@ public class Controller{
 		
 		
 	}
-	
-	/*public static long nextidoftable(String tablename) throws SQLException {
-		ResultSet res = Datenbankverbindung.runSQLquery("SELECT value FROM enums WHERE id = \""+ tablename +"\"");
-		res.next();
-		return res.getLong("value");
-	}*/
 
 	
 	public static List<String> courseroomslist() throws SQLException {
@@ -121,7 +115,7 @@ public class Controller{
 		
 	}
 	
-	public static List<String> test() throws SQLException{
+	public static List<String> listcoursenames() throws SQLException{
 		ResultSet rese = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
 		List<String> courses = new ArrayList<String>();
 		while(rese.next()) {
@@ -131,18 +125,6 @@ public class Controller{
 		
 	}
 	
-	public static List<Kursraum> scheiße() throws SQLException {
-		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kursraeume");
-		List<Kursraum> räume = new ArrayList<Kursraum>(); 
-		while(res.next()) {
-			räume.add(new Kursraum(res.getInt("room_id"), res.getString("raum")));
-		}
-		String[] rem = null;
-		for(Kursraum raum: räume) {
-			System.out.println(raum);
-		}
-		return räume;
-	}
 	
 	public static String Kursgetter(String s) throws SQLException {
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs WHERE kurs_name = \""+s+"\"");
@@ -169,7 +151,7 @@ public class Controller{
 		steg.showAndWait();
 	}
 	
-	public void delStudent(ActionEvent e) throws SQLException {
+	public void delStudent(ActionEvent e) throws SQLException, IOException {
 		String id_selection = student_id_input.getText();
 		char[] ch  = id_selection.toCharArray();
 		StringBuilder strbuild = new StringBuilder();
@@ -179,10 +161,15 @@ public class Controller{
 			}
 		}
 		id_selection = strbuild.toString();
-		if(id_selection != null) {
+		if(id_selection.length() != 0) {
 			Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE person_id =\""+id_selection+"\"");
 			Stage stage = (Stage) submitter.getScene().getWindow();
 			stage.close();
+		} else {
+			Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("initstudentfailure.fxml"));
+			Stage steg = new Stage();
+			steg.setScene(new Scene(root));
+			steg.showAndWait();
 		}
 		
 	}
@@ -203,67 +190,34 @@ public class Controller{
 		steg.showAndWait();
 	}
 	
-	public void delCourseAction(ActionEvent e) throws SQLException {
+	public void delCourseAction(ActionEvent e) throws SQLException, IOException {
 		String courseselection = myChoiceBox.getValue();
-		Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE kurs = \""+courseselection+"\"");
-		Datenbankverbindung.runSQL("DELETE FROM Kurs WHERE kurs_name = \""+courseselection+"\"");
-		Stage stage = (Stage) cdeleterbutton.getScene().getWindow();
-		stage.close();
+		if(courseselection != null) {
+			Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE kurs = \""+courseselection+"\"");
+			Datenbankverbindung.runSQL("DELETE FROM Kurs WHERE kurs_name = \""+courseselection+"\"");
+			Stage stage = (Stage) cdeleterbutton.getScene().getWindow();
+			stage.close();
+		} else {
+			Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("initstudentfailure.fxml"));
+			Stage steg = new Stage();
+			steg.setScene(new Scene(root));
+			steg.showAndWait();
+		}
 	}
 	
 	public void addStudent(ActionEvent e) throws IOException, SQLException {
-		//System.out.println("student added");
-		/*Stage StageRegStud;
-		Parent rooter = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("regstud.fxml"));
-		Scene SceneRegStud = new Scene(rooter);
-		StageRegStud = (Stage) ((Node)e.getSource()).getScene().getWindow();
-		StageRegStud.setScene(SceneRegStud);
-		StageRegStud.setTitle("Registering Student");
-		StageRegStud.show();*/
+		
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("regstud.fxml"));
 		Stage steg = new Stage();
 		steg.setScene(new Scene(root));
 		steg.showAndWait();
-		/*ArrayList List = new ArrayList();
-		ResultSet s = Datenbankverbindung.runSQLquery("SELECT COUNT(course_id) FROM Kurs;");
-		for (int i = 1; i< s.getRow(); i++) {
-			List.add(Datenbankverbindung.runSQLquery("SELECT kurs_name FROM Kurs WHERE course_id = \""+i+"\""));
-			System.out.println(List.get(i));
-		}*/
-		
-		
-		
 	}
-	
-	public void starter(ActionEvent x) throws IOException {
-		Stage newStage;
-		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
-		Scene newScene = new Scene(root);
-		newStage = (Stage) ((Node)x.getSource()).getScene().getWindow();
-		newStage.setScene(newScene);
-		newStage.setTitle("Main Menu");
-		newStage.show();
-		
-	}
-	
-
 	
 	public void stagecloser(ActionEvent e) {
 		Stage stage = (Stage) submitter.getScene().getWindow();
 		stage.close();
 	}
 	
-	
-
-	
-	public void listrows(ActionEvent e) {
-		
-	}
-	
-	public void addCourseRoomToCourse(ActionEvent e) {
-		
-	}
-
 
 	public void addStudentNew(ActionEvent x) throws Exception {
 		String selection = myChoiceBox.getValue();
@@ -329,7 +283,7 @@ public class Controller{
 		
 		MMCBOX = null;
 		if(MMCBOX == null) {
-			MMCBOX = new ChoiceBox<String>(FXCollections.observableArrayList(test()));
+			MMCBOX = new ChoiceBox<String>(FXCollections.observableArrayList(listcoursenames()));
 		}
 		
 		
@@ -421,24 +375,10 @@ public class Controller{
 	
 	
 	public void addCourse(ActionEvent e) throws IOException, SQLException {
-		/*Stage newStage;
-		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursenamereq.fxml"));
-		Scene newScene = new Scene(root);
-		newStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
-		newStage.setScene(newScene);
-		newStage.setTitle("Input");
-		newStage.show();*/
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursenamereq.fxml"));
 		Stage steg = new Stage();
 		steg.setScene(new Scene(root));
 		steg.showAndWait();
-		/*String coursename;
-		coursename = coursesubmit.getText();
-		try {
-			Datenbankverbindung.runSQL("INSERT INTO Kurs (kurs_name) VALUES (\""+coursename+"\")");
-		} catch (SQLException x) {
-			throw new RuntimeException(x);
-		}*/
 	}
 	
 	public void openHomescreen(ActionEvent e) throws Exception {
