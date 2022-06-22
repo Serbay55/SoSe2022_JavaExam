@@ -35,7 +35,7 @@ public class App extends Application {
         
         
 
-        Controller.scheiße();
+        //Controller.scheiße();
         
         Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
         backend.Controller.rootNew = root;
