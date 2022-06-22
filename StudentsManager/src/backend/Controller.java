@@ -82,10 +82,10 @@ public class Controller{
 			roomcb.getItems().addAll(courseroomslist());
 		}
 		if(MMCBOX != null) {
-			MMCBOX.getItems().addAll(test());
+			MMCBOX.getItems().addAll(mmcboxcontent());
 		}
 		if(myChoiceBox != null) {
-			myChoiceBox.getItems().addAll(test());
+			myChoiceBox.getItems().addAll(mmcboxcontent());
 		}
 		
 		if(studentenliste == null) {
@@ -118,7 +118,7 @@ public class Controller{
 		
 	}
 	
-	public static List<String> test() throws SQLException{
+	public static List<String> mmcboxcontent() throws SQLException{
 		ResultSet rese = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
 		List<String> courses = new ArrayList<String>();
 		while(rese.next()) {
@@ -127,15 +127,7 @@ public class Controller{
 		return courses;
 		
 	}
-	
-	public static List<Kursraum> scheiße() throws SQLException {
-		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kursraeume");
-		List<Kursraum> räume = new ArrayList<Kursraum>(); 
-		while(res.next()) {
-			räume.add(new Kursraum(res.getInt("room_id"), res.getString("raum")));
-		}
-		return räume;
-	}
+
 	
 	public static String Kursgetter(String s) throws SQLException {
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs WHERE kurs_name = \""+s+"\"");
@@ -320,7 +312,7 @@ public class Controller{
 		
 		MMCBOX = null;
 		if(MMCBOX == null) {
-			MMCBOX = new ChoiceBox<String>(FXCollections.observableArrayList(test()));
+			MMCBOX = new ChoiceBox<String>(FXCollections.observableArrayList(mmcboxcontent()));
 		}
 		
 		
