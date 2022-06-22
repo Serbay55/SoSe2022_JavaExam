@@ -322,8 +322,8 @@ public class Controller{
 		String mmcbox = MMCBOX.getValue();
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten WHERE kurs = \""+mmcbox+"\"");
 		List<Studenten> stdlist = new ArrayList<Studenten>();
-		String kursraum;
 		while(res.next()) {
+			String kursraum;
 			kursraum = Kursgetter(res.getString("kurs"));
 			stdlist.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs"), res.getInt("person_id"), kursraum));
 		}
