@@ -31,6 +31,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.Node;
@@ -254,15 +256,23 @@ public class Controller{
 				}
 			}
 			companyname = strbuildcname.toString();
-			try {
-				Datenbankverbindung.runSQL("INSERT INTO Studenten (vorname, nachname, Java_Skill, firma, kurs) VALUES (\""+vn+"\", \""+nn+"\", \""+jskill+"\", \""+companyname+"\", \""+selection+"\");");
-			} catch (SQLException z) {
-				throw new RuntimeException(z);
+			if(vn.length() != 0 && nn.length() != 0 && companyname.length() != 0) {
+				try {
+					Datenbankverbindung.runSQL("INSERT INTO Studenten (vorname, nachname, Java_Skill, firma, kurs) VALUES (\""+vn+"\", \""+nn+"\", \""+jskill+"\", \""+companyname+"\", \""+selection+"\");");
+				} catch (SQLException z) {
+					throw new RuntimeException(z);
+				}
+				studentenliste.add(new Studenten(vn, nn, companyColumn.getText().toString(), jskill, selection));
+				
+				Stage stage = (Stage) submitter.getScene().getWindow();
+				stage.close();
+			} else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Fehler!");
+				alert.setContentText("Vorname / Nachname / Firmenname sind falsch eingegeben worden oder nur Zahlen.");
+				alert.showAndWait();
+						
 			}
-			studentenliste.add(new Studenten(vn, nn, companyColumn.getText().toString(), jskill, selection));
-			
-			Stage stage = (Stage) submitter.getScene().getWindow();
-			stage.close();
 		} else {
 			Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("initstudentfailure.fxml"));
 			Stage steg = new Stage();
