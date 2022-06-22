@@ -25,8 +25,18 @@ public class App extends Application {
             	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Kurs (course_id INTEGER PRIMARY KEY, kurs_name varchar(30), kurs_raum varchar(30));");
             	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Studenten (person_id INTEGER PRIMARY KEY, vorname varchar(30), nachname varchar(30), firma varchar(30), Java_Skill int, kurs varchar(30) );");
             	Datenbankverbindung.runSQL("CREATE TABLE IF NOT EXISTS Kursraeume (room_id INTEGER PRIMARY KEY, raum varchar(25));");
-            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"online\",\"Audimax\",\"Carl-Benz-Hörsaal\",\"B040\",\"B041\",\"B042\",\"B043\",\"B044\",\"B045\",\"B046\",\"B047\",\"B048\");");
-            	//Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B040\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B048\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"online\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"Audimax\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"Carl-Benz-Hörsaal\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B040\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B041\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B042\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B043\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B044\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B045\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B046\");");
+            	Datenbankverbindung.runSQL("INSERT INTO Kursraeume (raum) VALUES (\"B047\");");
             }
         } catch (SQLException e){
             e.printStackTrace();
