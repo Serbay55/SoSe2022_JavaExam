@@ -138,9 +138,9 @@ public class Controller{
 			räume.add(new Kursraum(res.getInt("room_id"), res.getString("raum")));
 		}
 		String[] rem = null;
-		for(Kursraum raum: räume) {
+		/*for(Kursraum raum: räume) {
 			System.out.println(raum);
-		}
+		}*/
 		return räume;
 	}
 	
@@ -164,9 +164,10 @@ public class Controller{
 	
 	public void renderdelStudent(ActionEvent e) throws IOException {
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("studentdeleter.fxml"));
-		Stage steg = new Stage();
-		steg.setScene(new Scene(root));
-		steg.showAndWait();
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.setTitle("Student exmatrikulieren");
+		stage.showAndWait();
 	}
 	
 	public void delStudent(ActionEvent e) throws SQLException {
@@ -198,9 +199,10 @@ public class Controller{
 	
 	public void delCourse(ActionEvent e) throws IOException {
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursedeleter.fxml"));
-		Stage steg = new Stage();
-		steg.setScene(new Scene(root));
-		steg.showAndWait();
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.setTitle("Kurs loeschen");
+		stage.showAndWait();
 	}
 	
 	public void delCourseAction(ActionEvent e) throws SQLException {
@@ -221,9 +223,10 @@ public class Controller{
 		StageRegStud.setTitle("Registering Student");
 		StageRegStud.show();*/
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("regstud.fxml"));
-		Stage steg = new Stage();
-		steg.setScene(new Scene(root));
-		steg.showAndWait();
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.setTitle("Student anlegen");
+		stage.showAndWait();
 		/*ArrayList List = new ArrayList();
 		ResultSet s = Datenbankverbindung.runSQLquery("SELECT COUNT(course_id) FROM Kurs;");
 		for (int i = 1; i< s.getRow(); i++) {
@@ -311,9 +314,9 @@ public class Controller{
 			stage.close();
 		} else {
 			Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("initstudentfailure.fxml"));
-			Stage steg = new Stage();
-			steg.setScene(new Scene(root));
-			steg.showAndWait();
+			Stage stage = new Stage();
+			stage.setScene(new Scene(root));
+			stage.showAndWait();
 		}
 
 	}
@@ -410,9 +413,9 @@ public class Controller{
 			stag.close();
 		} else {
 			Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("initstudentfailure.fxml"));
-			Stage steg = new Stage();
-			steg.setScene(new Scene(root));
-			steg.showAndWait();
+			Stage stage = new Stage();
+			stage.setScene(new Scene(root));
+			stage.showAndWait();
 		}
 		
 		
@@ -429,9 +432,10 @@ public class Controller{
 		newStage.setTitle("Input");
 		newStage.show();*/
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursenamereq.fxml"));
-		Stage steg = new Stage();
-		steg.setScene(new Scene(root));
-		steg.showAndWait();
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.setTitle("Kurs anlegen");
+		stage.showAndWait();
 		/*String coursename;
 		coursename = coursesubmit.getText();
 		try {

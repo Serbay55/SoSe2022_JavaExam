@@ -1,20 +1,16 @@
 package backend;
 
 public class Studenten {
+	int identificator;
 	String vorname;
 	String nachname;
 	String firma;
 	String kurs;
 	String raumkurs;
-	public String getRaumkurs() {
-		return raumkurs;
-	}
-
-	public void setRaumkurs(String raumkurs) {
-		this.raumkurs = raumkurs;
-	}
-	int identificator;
 	int JSkill;
+
+
+
 	
 	public Studenten(String vorname, String nachname, String firma, int JSkill, String kurs) {
 		this.vorname = vorname;
@@ -46,11 +42,9 @@ public class Studenten {
 	public int getIdentificator() {
 		return identificator;
 	}
-
 	public void setIdentificator(int identificator) {
 		this.identificator = identificator;
 	}
-
 	public String getVorname() {
 		return vorname;
 	}
@@ -74,6 +68,12 @@ public class Studenten {
 	}
 	public void setKurs(String kurs) {
 		this.kurs = kurs;
+	}
+	public String getRaumkurs() {
+		return raumkurs;
+	}
+	public void setRaumkurs(String raumkurs) {
+		this.raumkurs = raumkurs;
 	}
 	public int getJSkill() {
 		return JSkill;

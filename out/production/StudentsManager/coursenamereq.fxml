@@ -10,9 +10,9 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="247.0" prefWidth="265.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
    <children>
       <TextField fx:id="coursesubmit" alignment="CENTER" layoutX="58.0" layoutY="65.0" />
-      <Text layoutX="48.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bitte einen Kursnamen angeben" />
-      <Button fx:id="submitter" alignment="CENTER" layoutX="101.0" layoutY="175.0" mnemonicParsing="false" onAction="#addCourseNew" text="Einfügen" textOverrun="CENTER_ELLIPSIS" />
-      <ChoiceBox fx:id="roomcb" layoutX="57.0" layoutY="121.0" prefWidth="150.0" />
-      <Label layoutX="78.0" layoutY="96.0" text="Kursraum auswählen" />
+      <Text layoutX="48.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bitte einen Kursnamen angeben" />
+      <Button fx:id="submitter" alignment="CENTER" layoutX="101.0" layoutY="200.0" mnemonicParsing="false" onAction="#addCourseNew" text="Einfügen" textOverrun="CENTER_ELLIPSIS" />
+      <ChoiceBox fx:id="roomcb" layoutX="57.0" layoutY="150.0" prefWidth="150.0" />
+      <Label layoutX="78.0" layoutY="120.0" text="Kursraum auswählen" />
    </children>
 </AnchorPane>
