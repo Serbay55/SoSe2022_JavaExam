@@ -38,18 +38,7 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 
 public class Controller{
-	/*
-	 * 
-	 * Sehr geehrter Herr Sebastian Damm,
-	 * 
-	 * falls Sie sich wundern, warum ich nur ein Controller habe,
-	 * da habe ich nichts zu rechtfertigen. Ich bin n√§mlich heimlich
-	 * Real Mitarbeiter. Bei uns hei√üt es "Einmal hin, alles drin"
-	 * 
-	 * viel Spa√ü beim lesen.
-	 * 
-	 * ne wirklich haben Sie verst√§ndnis ich musste so einiges Alleine machen
-	 */
+
 	
 	@FXML
 	public TextField vinp;
@@ -165,14 +154,21 @@ public class Controller{
 			}
 		}
 		id_selection = strbuild.toString();
-		if(id_selection.length() != 0) {
+		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten WHERE person_id =\""+id_selection+"\"");
+		if(id_selection.length() != 0 && res.next()) {
 			Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE person_id =\""+id_selection+"\"");
+
 			Stage stage = (Stage) submitter.getScene().getWindow();
 			stage.close();
+
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Lˆschung Erfolgreich!");
+			alert.setContentText("Der Student '" + res.getString("vorname") + " " + res.getString("vorname") + "' wurde erfolgreich gelˆscht!");
+			alert.showAndWait();
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Fehler!");
-			alert.setContentText("Bitte geben Sie eine Studenten ID von der Tabelle ein");
+			alert.setContentText("Bitte geben Sie eine existierende Studenten ID ein");
 			alert.showAndWait();
 		}
 		
@@ -200,12 +196,19 @@ public class Controller{
 		if(courseselection != null) {
 			Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE kurs = \""+courseselection+"\"");
 			Datenbankverbindung.runSQL("DELETE FROM Kurs WHERE kurs_name = \""+courseselection+"\"");
+
 			Stage stage = (Stage) cdeleterbutton.getScene().getWindow();
 			stage.close();
+
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Lˆschung Erfolgreich!");
+			alert.setContentText("Der Kurs " + courseselection + " wurde erfolgreich gelˆscht!");
+			alert.showAndWait();
+
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Fehler!");
-			alert.setContentText("W√§hlen Sie bitte ein Kurs aus");
+			alert.setContentText("W‰hlen Sie bitte einen existierenden Kurs aus");
 			alert.showAndWait();
 		}
 	}
@@ -282,9 +285,15 @@ public class Controller{
 					throw new RuntimeException(z);
 				}
 				studentenliste.add(new Studenten(vn, nn, companyColumn.getText().toString(), jskill, selection));
-				
+
 				Stage stage = (Stage) submitter.getScene().getWindow();
 				stage.close();
+
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Anlage Erfolgreich!");
+				alert.setContentText("Der Student '" + vn + " " + nn + "' wurde erfolgreich angelegt!");
+				alert.showAndWait();
+
 			} else {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Fehler!");
@@ -342,14 +351,14 @@ public class Controller{
 		}
 	}
 	
-	public static boolean r√§umecheck(String s) throws SQLException{
+	public static boolean r‰umecheck(String s) throws SQLException{
 		ResultSet rs = Datenbankverbindung.runSQLquery("SELECT kurs_raum FROM Kurs WHERE kurs_raum = \""+s+"\"");
-		List<String> belegteKursr√§ume = new ArrayList<String>();
+		List<String> belegteKursr‰ume = new ArrayList<String>();
 		while(rs.next()) {
-			belegteKursr√§ume.add(rs.getString("kurs_raum"));
+			belegteKursr‰ume.add(rs.getString("kurs_raum"));
 		}
 		boolean x = false;
-		if(belegteKursr√§ume.size() == 0) {
+		if(belegteKursr‰ume.size() == 0) {
 			x = true;
 		}
 		return x;
@@ -382,15 +391,22 @@ public class Controller{
 		}
 		coursename = strbuild.toString();
 		boolean kursnamecheck = kurscheck(coursename);
-		boolean dbcheck = r√§umecheck(kursraum);
+		boolean dbcheck = r‰umecheck(kursraum);
 		if(kursraum != null && coursename != null && dbcheck && kursnamecheck) {
 			try {
 				Datenbankverbindung.runSQL("INSERT INTO Kurs (kurs_name, kurs_raum) VALUES (\""+coursename+"\", \""+kursraum+"\")");
 			} catch (SQLException x) {
 				throw new RuntimeException(x);
 			}
+
 			Stage stag = (Stage) submitter.getScene().getWindow();
 			stag.close();
+
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Anlage Erfolgreich!");
+			alert.setContentText("Der Kurs " + coursename + " wurde erfolgreich angelegt!");
+			alert.showAndWait();
+
 		} else if(kursraum != null && coursename != null && dbcheck == false && kursnamecheck) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Fehler!");
