@@ -162,8 +162,8 @@ public class Controller{
 			stage.close();
 
 			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Löschung Erfolgreich!");
-			alert.setContentText("Der Student '" + res.getString("vorname") + " " + res.getString("vorname") + "' wurde erfolgreich gelöscht!");
+			alert.setTitle("LÃ¶schung Erfolgreich!");
+			alert.setContentText("Der Student '" + res.getString("vorname") + " " + res.getString("vorname") + "' wurde erfolgreich gelÃ¶scht!");
 			alert.showAndWait();
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -201,14 +201,14 @@ public class Controller{
 			stage.close();
 
 			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Löschung Erfolgreich!");
-			alert.setContentText("Der Kurs " + courseselection + " wurde erfolgreich gelöscht!");
+			alert.setTitle("LÃ¶schung Erfolgreich!");
+			alert.setContentText("Der Kurs " + courseselection + " wurde erfolgreich gelÃ¶scht!");
 			alert.showAndWait();
 
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Fehler!");
-			alert.setContentText("Wählen Sie bitte einen existierenden Kurs aus");
+			alert.setContentText("WÃ¤hlen Sie bitte einen existierenden Kurs aus");
 			alert.showAndWait();
 		}
 	}
@@ -351,14 +351,14 @@ public class Controller{
 		}
 	}
 	
-	public static boolean räumecheck(String s) throws SQLException{
+	public static boolean raeumecheck(String s) throws SQLException{
 		ResultSet rs = Datenbankverbindung.runSQLquery("SELECT kurs_raum FROM Kurs WHERE kurs_raum = \""+s+"\"");
-		List<String> belegteKursräume = new ArrayList<String>();
+		List<String> belegteKursraeume = new ArrayList<String>();
 		while(rs.next()) {
-			belegteKursräume.add(rs.getString("kurs_raum"));
+			belegteKursraeume.add(rs.getString("kurs_raum"));
 		}
 		boolean x = false;
-		if(belegteKursräume.size() == 0) {
+		if(belegteKursraeume.size() == 0) {
 			x = true;
 		}
 		return x;
@@ -391,7 +391,7 @@ public class Controller{
 		}
 		coursename = strbuild.toString();
 		boolean kursnamecheck = kurscheck(coursename);
-		boolean dbcheck = räumecheck(kursraum);
+		boolean dbcheck = raeumecheck(kursraum);
 		if(kursraum != null && coursename != null && dbcheck && kursnamecheck) {
 			try {
 				Datenbankverbindung.runSQL("INSERT INTO Kurs (kurs_name, kurs_raum) VALUES (\""+coursename+"\", \""+kursraum+"\")");
