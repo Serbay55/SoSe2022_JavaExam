@@ -131,7 +131,7 @@ public class Controller{
 
 	public void addStudent(ActionEvent e) throws IOException, SQLException {
 
-		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("regstud.fxml"));
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("studentCreator.fxml"));
 		Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.setTitle("Student anlegen");
@@ -249,7 +249,7 @@ public class Controller{
 
 	public void addCourse(ActionEvent e) throws IOException, SQLException {
 
-		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursenamereq.fxml"));
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("courseCreator.fxml"));
 		Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.setTitle("Kurs anlegen");
