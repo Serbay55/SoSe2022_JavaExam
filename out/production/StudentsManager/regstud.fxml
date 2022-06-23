@@ -8,18 +8,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="508.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
    <children>
-      <TextField fx:id="vinp" layoutX="92.0" layoutY="46.0" />
-      <TextField fx:id="nninp" layoutX="92.0" layoutY="90.0" />
-      <Text layoutX="140.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vorname" />
-      <Text layoutX="140.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nachname" />
-      <Text layoutX="140.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Firma" />
-      <Label layoutX="383.0" layoutY="40.0" text="Kurswahl" />
-      <Text layoutX="140.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="JavaSkill" />
-      <Button fx:id="submitter" layoutX="274.0" layoutY="282.0" mnemonicParsing="false" onAction="#addStudentNew" text="Anlegen" />
-      <Slider fx:id="javaskill" layoutX="94.0" layoutY="240.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-      <ChoiceBox fx:id="myChoiceBox" layoutX="332.0" layoutY="69.0" prefWidth="150.0" />
-      <TextField fx:id="companyColumn" layoutX="90.0" layoutY="132.0" />
+      <TextField fx:id="vinp" layoutX="61.0" layoutY="77.0" />
+      <TextField fx:id="nninp" layoutX="61.0" layoutY="144.0" />
+      <TextField fx:id="companyColumn" layoutX="61.0" layoutY="209.0" />
+      <ChoiceBox fx:id="myChoiceBox" layoutX="300.0" layoutY="77.0" prefWidth="150.0" />
+      <Slider fx:id="javaskill" layoutX="300.0" layoutY="157.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Button fx:id="submitter" layoutX="188.0" layoutY="280.0" mnemonicParsing="false" onAction="#addStudentNew" prefHeight="26.0" prefWidth="131.0" text="Student anlegen" />
+      <Text layoutX="60.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vorname" />
+      <Text layoutX="60.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nachname" />
+      <Text layoutX="60.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Firma" />
+      <Label layoutX="346.0" layoutY="52.0" text="Kurswahl" />
+      <Text layoutX="346.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="JavaSkill" />
    </children>
 </AnchorPane>

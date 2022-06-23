@@ -23,16 +23,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.Node;
@@ -41,6 +33,7 @@ public class Controller{
 
 	
 	@FXML
+
 	public TextField vinp;
 	public TextField nninp;
 	public TextField coursesubmit;
@@ -51,7 +44,7 @@ public class Controller{
 	@FXML public TableView<Studenten> tableview;
 	@FXML private TableColumn<Studenten, String> firstNameColumn;
 	@FXML private TableColumn<Studenten, String> lastNameColumn;
-	@FXML public TableColumn<Studenten, String> companyColumn2;
+	@FXML private TableColumn<Studenten, String> companyColumn2;
 	@FXML private TableColumn<Studenten, Integer> jskill;
 	@FXML private TableColumn<Studenten, String> kursColumn;
 	@FXML private TableColumn<Studenten, Integer> identificator;
@@ -68,13 +61,13 @@ public class Controller{
 	@FXML public void initialize() throws SQLException {
 		ResultSet kurse = Datenbankverbindung.runSQLquery("SELECT kurs_name FROM Kurs");
 		if(roomcb != null) {
-			roomcb.getItems().addAll(courseroomslist());
+			roomcb.getItems().addAll(roomsList());
 		}
 		if(MMCBOX != null) {
-			MMCBOX.getItems().addAll(mmcboxcontent());
+			MMCBOX.getItems().addAll(coursesList());
 		}
 		if(myChoiceBox != null) {
-			myChoiceBox.getItems().addAll(mmcboxcontent());
+			myChoiceBox.getItems().addAll(coursesList());
 		}
 		
 		if(studentenliste == null) {
@@ -83,12 +76,12 @@ public class Controller{
 		}
 		if(tableview != null) {
 			tableview.getItems().addAll(studentenliste);
+			identificator.setCellValueFactory(new PropertyValueFactory<Studenten, Integer>("identificator"));
 			firstNameColumn.setCellValueFactory(new PropertyValueFactory<Studenten, String>("vorname"));
 			lastNameColumn.setCellValueFactory(new PropertyValueFactory<Studenten, String>("nachname"));
 			companyColumn2.setCellValueFactory(new PropertyValueFactory<Studenten, String>("firma"));
 			jskill.setCellValueFactory(new PropertyValueFactory<Studenten, Integer>("JSkill"));
 			kursColumn.setCellValueFactory(new PropertyValueFactory<Studenten, String>("kurs"));
-			identificator.setCellValueFactory(new PropertyValueFactory<Studenten, Integer>("identificator"));
 			kursraumColumn.setCellValueFactory(new PropertyValueFactory<Studenten, String>("raumkurs"));
 		}
 		
@@ -97,150 +90,54 @@ public class Controller{
 	
 
 	
-	public static List<String> courseroomslist() throws SQLException {
-		ResultSet rese = Datenbankverbindung.runSQLquery("SELECT * FROM Kursraeume");
+	public static List<String> roomsList() throws SQLException {
+		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kursraeume");
 		List<String> rooms = new ArrayList<String>();
-		while(rese.next()) {
-			rooms.add(rese.getString("raum"));
+		while(res.next()) {
+			rooms.add(res.getString("raum"));
 		}
 		return rooms;
 		
 	}
 	
-	public static List<String> mmcboxcontent() throws SQLException{
-		ResultSet rese = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
+	public static List<String> coursesList() throws SQLException{
+		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
 		List<String> courses = new ArrayList<String>();
-		while(rese.next()) {
-			courses.add(rese.getString("kurs_name"));
+		while(res.next()) {
+			courses.add(res.getString("kurs_name"));
 		}
 		return courses;
 		
 	}
 
 	
-	public static String Kursgetter(String s) throws SQLException {
+	public static String raumGetter(String s) throws SQLException {
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs WHERE kurs_name = \""+s+"\"");
-		String k = res.getString("kurs_raum");
-		return k;
+		String raum = res.getString("kurs_raum");
+		return raum;
 		
 	}
 	
 	public static List<Studenten> studentenlister() throws SQLException {
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten");
-		List<Studenten> stdlist = new ArrayList<Studenten>();
+		List<Studenten> studentenList = new ArrayList<Studenten>();
 		String kursraum;
 		while(res.next()) {
-			kursraum = Kursgetter(res.getString("kurs"));
-			stdlist.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs"), res.getInt("person_id"), kursraum));
+			kursraum = raumGetter(res.getString("kurs"));
+			studentenList.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs"), res.getInt("person_id"), kursraum));
 		}
-		return stdlist;
+		return studentenList;
 	}
-	
-	public void renderdelStudent(ActionEvent e) throws IOException {
-		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("studentdeleter.fxml"));
-		Stage stage = new Stage();
-		stage.setScene(new Scene(root));
-		stage.setTitle("Student exmatrikulieren");
-		stage.showAndWait();
-	}
-	
-	public void delStudent(ActionEvent e) throws SQLException {
-		String id_selection = student_id_input.getText();
-		char[] ch  = id_selection.toCharArray();
-		StringBuilder strbuild = new StringBuilder();
-		for(char c: ch) {
-			if(Character.isDigit(c)) {
-				strbuild.append(c);
-			}
-		}
-		id_selection = strbuild.toString();
-		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten WHERE person_id =\""+id_selection+"\"");
-		if(id_selection.length() != 0 && res.next()) {
-			Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE person_id =\""+id_selection+"\"");
 
-			Stage stage = (Stage) submitter.getScene().getWindow();
-			stage.close();
-
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Löschung Erfolgreich!");
-			alert.setContentText("Der Student '" + res.getString("vorname") + " " + res.getString("vorname") + "' wurde erfolgreich gelöscht!");
-			alert.showAndWait();
-		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Fehler!");
-			alert.setContentText("Bitte geben Sie eine existierende Studenten ID ein");
-			alert.showAndWait();
-		}
-		
-	}
-	
-	public static List<Kurs> courseselect() throws SQLException {
-		ResultSet res1 = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
-		List<Kurs> kurse = new ArrayList<Kurs>();
-		while(res1.next()) {
-			kurse.add(new Kurs(res1.getString("kurs_name"), res1.getString("kurs_raum")));
-		}
-		return kurse;
-	}
-	
-	public void delCourse(ActionEvent e) throws IOException {
-		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursedeleter.fxml"));
-		Stage stage = new Stage();
-		stage.setScene(new Scene(root));
-		stage.setTitle("Kurs loeschen");
-		stage.showAndWait();
-	}
-	
-	public void delCourseAction(ActionEvent e) throws SQLException {
-		String courseselection = myChoiceBox.getValue();
-		if(courseselection != null) {
-			Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE kurs = \""+courseselection+"\"");
-			Datenbankverbindung.runSQL("DELETE FROM Kurs WHERE kurs_name = \""+courseselection+"\"");
-
-			Stage stage = (Stage) cdeleterbutton.getScene().getWindow();
-			stage.close();
-
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Löschung Erfolgreich!");
-			alert.setContentText("Der Kurs " + courseselection + " wurde erfolgreich gelöscht!");
-			alert.showAndWait();
-
-		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Fehler!");
-			alert.setContentText("Wählen Sie bitte einen existierenden Kurs aus");
-			alert.showAndWait();
-		}
-	}
-	
 	public void addStudent(ActionEvent e) throws IOException, SQLException {
-		
+
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("regstud.fxml"));
 		Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.setTitle("Student anlegen");
 		stage.showAndWait();
-		
-	}
-	
-	public void starter(ActionEvent x) throws IOException {
-		Stage newStage;
-		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
-		Scene newScene = new Scene(root);
-		newStage = (Stage) ((Node)x.getSource()).getScene().getWindow();
-		newStage.setScene(newScene);
-		newStage.setTitle("Main Menu");
-		newStage.show();
-		
-	}
-	
 
-	
-	public void stagecloser(ActionEvent e) {
-		Stage stage = (Stage) submitter.getScene().getWindow();
-		stage.close();
 	}
-	
 
 
 	public void addStudentNew(ActionEvent x) throws Exception {
@@ -260,7 +157,7 @@ public class Controller{
 				}
 			}
 			vn = strbuildregstud.toString();
-			
+
 			//
 			char[] es = nn.toCharArray();
 			StringBuilder strbuildregstud2 = new StringBuilder();
@@ -299,7 +196,7 @@ public class Controller{
 				alert.setTitle("Fehler!");
 				alert.setContentText("Vorname / Nachname / Firmenname sind falsch eingegeben worden oder nur Zahlen.");
 				alert.showAndWait();
-						
+
 			}
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -309,6 +206,160 @@ public class Controller{
 		}
 
 	}
+
+	
+	public void renderdelStudent(ActionEvent e) throws IOException {
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("studentdeleter.fxml"));
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.setTitle("Student exmatrikulieren");
+		stage.showAndWait();
+	}
+	
+	public void delStudent(ActionEvent e) throws SQLException {
+		String id_selection = student_id_input.getText();
+		char[] ch  = id_selection.toCharArray();
+		StringBuilder strbuild = new StringBuilder();
+		for(char c: ch) {
+			if(Character.isDigit(c)) {
+				strbuild.append(c);
+			}
+		}
+		id_selection = strbuild.toString();
+		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten WHERE person_id =\""+id_selection+"\"");
+		if(id_selection.length() != 0 && res.next()) {
+			Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE person_id =\""+id_selection+"\"");
+
+			Stage stage = (Stage) submitter.getScene().getWindow();
+			stage.close();
+
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Löschung Erfolgreich!");
+			alert.setContentText("Der Student '" + res.getString("vorname") + " " + res.getString("vorname") + "' wurde erfolgreich gelöscht!");
+			alert.showAndWait();
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Fehler!");
+			alert.setContentText("Bitte geben Sie eine existierende Studenten-ID ein");
+			alert.showAndWait();
+		}
+		
+	}
+
+
+	public void addCourse(ActionEvent e) throws IOException, SQLException {
+
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursenamereq.fxml"));
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.setTitle("Kurs anlegen");
+		stage.showAndWait();
+
+	}
+
+
+	public void addCourseNew(ActionEvent i) throws IOException, SQLException {
+		String kursraum = roomcb.getValue();
+		String coursename;
+		coursename = coursesubmit.getText();
+		char[] ch = coursename.toCharArray();
+		StringBuilder strbuild = new StringBuilder();
+		for(char c : ch) {
+			if(Character.isAlphabetic(c) || Character.isDigit(c)) {
+				strbuild.append(c);
+			}
+		}
+		coursename = strbuild.toString();
+		boolean kursnamecheck = kurscheck(coursename);
+		boolean dbcheck = raeumecheck(kursraum);
+		if(kursraum != null && coursename != null && dbcheck && kursnamecheck) {
+			try {
+				Datenbankverbindung.runSQL("INSERT INTO Kurs (kurs_name, kurs_raum) VALUES (\""+coursename+"\", \""+kursraum+"\")");
+			} catch (SQLException x) {
+				throw new RuntimeException(x);
+			}
+
+			Stage stag = (Stage) submitter.getScene().getWindow();
+			stag.close();
+
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Anlage Erfolgreich!");
+			alert.setContentText("Der Kurs '" + coursename + "' wurde erfolgreich angelegt!");
+			alert.showAndWait();
+
+		} else if(kursraum != null && coursename != null && dbcheck == false && kursnamecheck) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Fehler!");
+			alert.setContentText("Der Kursraum '" + kursraum + "' ist schon belegt");
+			alert.showAndWait();
+		} else if(kursraum != null && coursename != null && dbcheck && kursnamecheck == false) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Fehler!");
+			alert.setContentText("Es existiert bereits ein Kurs mit dieser Bezeichnung: \""+coursename+"\"");
+			alert.showAndWait();
+		} else if(kursraum != null && coursename != null && dbcheck == false && kursnamecheck == false) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Fehler!");
+			alert.setContentText("Es existiert bereits ein Kurs mit der Bezeichnung \""+coursename+"\" und der Kursraum "+kursraum+" ist schon belegt");
+			alert.showAndWait();
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Fehler!");
+			alert.setContentText("Keine Sonderzeichen oder leere Eingaben toleriert");
+			alert.showAndWait();
+		}
+
+
+	}
+
+
+	public void delCourse(ActionEvent e) throws IOException {
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursedeleter.fxml"));
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.setTitle("Kurs loeschen");
+		stage.showAndWait();
+	}
+	
+	public void delCourseAction(ActionEvent e) throws SQLException {
+		String courseselection = myChoiceBox.getValue();
+		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs WHERE kurs_name =\""+courseselection+"\"");
+
+
+
+		if (courseselection != null && res.next()) {
+
+			Alert confirmation = new Alert(AlertType.CONFIRMATION, "Yes" + "no", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+			confirmation.setTitle("Bestätigung");
+			confirmation.setContentText("Achtung, wenn der Kurs gelöscht wird, werden alle Studenten dieses Kurses exmatrikuliert! \nWollen Sie den Kurs '" + courseselection + "' wirklich löschen?");
+			confirmation.getDialogPane().setPrefSize(350, 200);
+			confirmation.showAndWait();
+
+			if (confirmation.getResult() == ButtonType.YES) {
+				Datenbankverbindung.runSQL("DELETE FROM Studenten WHERE kurs = \"" + courseselection + "\"");
+				Datenbankverbindung.runSQL("DELETE FROM Kurs WHERE kurs_name = \"" + courseselection + "\"");
+
+
+				Stage stage = (Stage) cdeleterbutton.getScene().getWindow();
+				stage.close();
+
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Löschung Erfolgreich!");
+				alert.setContentText("Der Kurs '" + courseselection + "' wurde erfolgreich gelöscht! \nAlle Studenten des Kurses wurden exmatrikuliert!");
+				alert.showAndWait();
+			}
+
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Fehler!");
+			alert.setContentText("Wählen Sie bitte einen existierenden Kurs aus");
+			alert.showAndWait();
+		}
+
+	}
+	
+
+
 	
 	public void refreshTable(ActionEvent e) throws Exception {
 		studentenliste.removeAll(studentenliste);
@@ -321,7 +372,7 @@ public class Controller{
 		
 		MMCBOX = null;
 		if(MMCBOX == null) {
-			MMCBOX = new ChoiceBox<String>(FXCollections.observableArrayList(mmcboxcontent()));
+			MMCBOX = new ChoiceBox<String>(FXCollections.observableArrayList(coursesList()));
 		}
 		
 		
@@ -333,7 +384,7 @@ public class Controller{
 		List<Studenten> stdlist = new ArrayList<Studenten>();
 		while(res.next()) {
 			String kursraum;
-			kursraum = Kursgetter(res.getString("kurs"));
+			kursraum = raumGetter(res.getString("kurs"));
 			stdlist.add(new Studenten(res.getString("vorname"), res.getString("nachname"), res.getString("firma"), res.getInt("Java_Skill"), res.getString("kurs"), res.getInt("person_id"), kursraum));
 		}
 		return stdlist;
@@ -378,71 +429,7 @@ public class Controller{
 	}
 
 	
-	public void addCourseNew(ActionEvent i) throws IOException, SQLException {
-		String kursraum = roomcb.getValue();
-		String coursename;
-		coursename = coursesubmit.getText();
-		char[] ch = coursename.toCharArray();
-		StringBuilder strbuild = new StringBuilder();
-		for(char c : ch) {
-			if(Character.isAlphabetic(c) || Character.isDigit(c)) {
-				strbuild.append(c);
-			}
-		}
-		coursename = strbuild.toString();
-		boolean kursnamecheck = kurscheck(coursename);
-		boolean dbcheck = raeumecheck(kursraum);
-		if(kursraum != null && coursename != null && dbcheck && kursnamecheck) {
-			try {
-				Datenbankverbindung.runSQL("INSERT INTO Kurs (kurs_name, kurs_raum) VALUES (\""+coursename+"\", \""+kursraum+"\")");
-			} catch (SQLException x) {
-				throw new RuntimeException(x);
-			}
 
-			Stage stag = (Stage) submitter.getScene().getWindow();
-			stag.close();
-
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Anlage Erfolgreich!");
-			alert.setContentText("Der Kurs " + coursename + " wurde erfolgreich angelegt!");
-			alert.showAndWait();
-
-		} else if(kursraum != null && coursename != null && dbcheck == false && kursnamecheck) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Fehler!");
-			alert.setContentText("Der "+kursraum+" Kursraum ist schon belegt");
-			alert.showAndWait();
-		} else if(kursraum != null && coursename != null && dbcheck && kursnamecheck == false) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Fehler!");
-			alert.setContentText("Es existiert bereits ein Kurs mit dieser Bezeichnung: \""+coursename+"\"");
-			alert.showAndWait();
-		} else if(kursraum != null && coursename != null && dbcheck == false && kursnamecheck == false) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Fehler!");
-			alert.setContentText("Es existiert bereits ein Kurs mit der Bezeichnung \""+coursename+"\" und der Kursraum "+kursraum+" ist schon belegt");
-			alert.showAndWait();
-		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Fehler!");
-			alert.setContentText("Keine Sonderzeichen oder leere Eingaben toleriert");
-			alert.showAndWait();
-		}
-		
-		
-	}
-	
-	
-	
-	public void addCourse(ActionEvent e) throws IOException, SQLException {
-
-		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursenamereq.fxml"));
-		Stage stage = new Stage();
-		stage.setScene(new Scene(root));
-		stage.setTitle("Kurs anlegen");
-		stage.showAndWait();
-
-	}
 	
 	public void openHomescreen(ActionEvent e) throws Exception {
 		Stage newStage;

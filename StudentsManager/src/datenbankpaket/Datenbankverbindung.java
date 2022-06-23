@@ -24,10 +24,10 @@ public class Datenbankverbindung {
     }
     private static Connection connection;
     
-    public synchronized static void runSQL(String query) throws SQLException {  // für alles andere
+    public synchronized static void runSQL(String query) throws SQLException {
     	connection.createStatement().execute(query);
     }
-    public static ResultSet runSQLquery(String query) throws SQLException { //zum selecten
+    public static ResultSet runSQLquery(String query) throws SQLException {
     	return connection.createStatement().executeQuery(query);
     }
     
