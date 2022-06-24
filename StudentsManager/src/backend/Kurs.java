@@ -17,6 +17,8 @@ public class Kurs {
 		this.raum = raum;
 	}
 
+
+
 	/**
 	 * Entfernt Sonderzeichen
 	 * @param ch char Array, aus dem die Sonderzeichen entfernt werden sollen

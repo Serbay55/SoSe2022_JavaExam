@@ -127,15 +127,15 @@ public class Controller{
 
 	/**
 	 * Gibt den aktuellen Raum für einen bestimmten Kurs an
-	 * @param s String: Kursname, der ausgewertet werden soll
+	 * @param kursname String: Kursname, der ausgewertet werden soll
 	 * @return String: Kursraum, der aktuell in der DB gespeichert ist
 	 * @throws SQLException
 	 */
-	public static String raumGetter(String s) throws SQLException {
-		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs WHERE kurs_name = \""+s+"\"");
+	public static String raumGetter(String kursname) throws SQLException {
+		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs WHERE kurs_name = \""+kursname+"\"");
 		String raum = res.getString("kurs_raum");
 		return raum;
-		
+
 	}
 
 

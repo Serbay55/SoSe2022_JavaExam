@@ -136,6 +136,9 @@ public class Studenten {
 			throw new RuntimeException(z);
 		}
 	}
+
+
+
 	
 	public int getIdentificator() {
 		return identificator;
