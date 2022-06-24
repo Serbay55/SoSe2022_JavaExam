@@ -143,17 +143,6 @@ public class Controller{
 
 
 
-	public String checkCourseName(char[] ch){
-
-		StringBuilder strbuildregstud = new StringBuilder();
-		for(char c : ch) {
-			if(Character.isAlphabetic(c) || Character.isDigit(c)) {
-				strbuildregstud.append(c);
-			}
-		}
-		return strbuildregstud.toString();
-	}
-
 	public void createStudent(ActionEvent x) throws Exception {
 
 		String firstname = vinp.getText();
@@ -168,7 +157,7 @@ public class Controller{
 
 		if(fehlerhafteDaten.equals("keine")) {
 
-			student.toDatabase();
+			student.anlegenDB();
 
 			studentenliste.add(new Studenten(firstname, lastname, companyColumn.getText(), jskill, kurs));
 
@@ -245,17 +234,13 @@ public class Controller{
 		String kursraum = roomcb.getValue();
 		String kursname = coursesubmit.getText();
 
-		kursname = checkCourseName(kursname.toCharArray());
+		Kurs kurs = new Kurs(kursname,kursraum);
+		String fehlerhafteDaten = kurs.checkData();
 
-		boolean kursnamecheck = kurscheck(kursname);
-		boolean dbcheck = raeumecheck(kursraum);
 
-		if(kursraum != null && kursname != null && dbcheck && kursnamecheck) {
-			try {
-				Datenbankverbindung.runSQL("INSERT INTO Kurs (kurs_name, kurs_raum) VALUES (\""+kursname+"\", \""+kursraum+"\")");
-			} catch (SQLException x) {
-				throw new RuntimeException(x);
-			}
+		if(fehlerhafteDaten.equals("keine") && !kurs.kursNameBelegt() && !kurs.kursRaumBelegt()) {
+
+			kurs.anlegenDB();
 
 			Stage stag = (Stage) submitter.getScene().getWindow();
 			stag.close();
@@ -265,25 +250,22 @@ public class Controller{
 			alert.setContentText("Der Kurs '" + kursname + "' wurde erfolgreich angelegt!");
 			alert.showAndWait();
 
-		} else if(kursraum != null && kursname != null && dbcheck == false && kursnamecheck) {
+		}else if(!fehlerhafteDaten.equals("keine")){
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Fehler!");
-			alert.setContentText("Der Kursraum '" + kursraum + "' ist schon belegt");
+			alert.setContentText(fehlerhafteDaten + " ist leer oder besteht nur aus falschen Zeichen!");
 			alert.showAndWait();
-		} else if(kursraum != null && kursname != null && dbcheck && kursnamecheck == false) {
+		}
+		else if(kurs.kursRaumBelegt()) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Fehler!");
+			alert.setContentText("Der Kursraum '" + kursraum + "' ist schon belegt!");
+			alert.showAndWait();
+		}
+		else if(kurs.kursNameBelegt()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Fehler!");
 			alert.setContentText("Es existiert bereits ein Kurs mit dieser Bezeichnung: \""+kursname+"\"");
-			alert.showAndWait();
-		} else if(kursraum != null && kursname != null && dbcheck == false && kursnamecheck == false) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Fehler!");
-			alert.setContentText("Es existiert bereits ein Kurs mit der Bezeichnung \""+kursname+"\" und der Kursraum "+kursraum+" ist schon belegt");
-			alert.showAndWait();
-		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Fehler!");
-			alert.setContentText("Keine Sonderzeichen oder leere Eingaben toleriert");
 			alert.showAndWait();
 		}
 
@@ -380,31 +362,7 @@ public class Controller{
 		}
 	}
 	
-	public static boolean raeumecheck(String s) throws SQLException{
-		ResultSet rs = Datenbankverbindung.runSQLquery("SELECT kurs_raum FROM Kurs WHERE kurs_raum = \""+s+"\"");
-		List<String> belegteKursraeume = new ArrayList<String>();
-		while(rs.next()) {
-			belegteKursraeume.add(rs.getString("kurs_raum"));
-		}
-		boolean x = false;
-		if(belegteKursraeume.size() == 0) {
-			x = true;
-		}
-		return x;
-	}
-	
-	public static boolean kurscheck(String s) throws SQLException{
-		ResultSet rs = Datenbankverbindung.runSQLquery("SELECT kurs_name FROM Kurs WHERE kurs_name = \""+s+"\"");
-		List<String> belegtekursnamen = new ArrayList<String>();
-		while(rs.next()) {
-			belegtekursnamen.add(rs.getString("kurs_name"));
-		}
-		boolean x = false;
-		if(belegtekursnamen.size() == 0) {
-			x = true;
-		}
-		return x;
-	}
+
 
 	
 

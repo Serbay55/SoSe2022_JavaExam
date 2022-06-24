@@ -67,6 +67,17 @@ public class Studenten {
 		return strbuildregstud.toString();
 	}
 
+	public String checkID(char[] ch){
+
+		StringBuilder strbuildregstud = new StringBuilder();
+		for(char c : ch) {
+			if(Character.isDigit(c)) {
+				strbuildregstud.append(c);
+			}
+		}
+		return strbuildregstud.toString();
+	}
+
 	public String checkData(){
 
 		this.vorname = this.checkName(this.getVorname().toCharArray());
@@ -93,7 +104,7 @@ public class Studenten {
 
 
 
-	public void toDatabase(){
+	public void anlegenDB(){
 		try {
 			Datenbankverbindung.runSQL("INSERT INTO Studenten (vorname, nachname, Java_Skill, firma, kurs) VALUES (\""+this.getVorname()+"\", \""+this.getNachname()+"\", \""+this.getJSkill()+"\", \""+this.getFirma()+"\", \""+this.getKurs()+"\");");
 		} catch (SQLException z) {

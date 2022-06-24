@@ -8,10 +8,10 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="849.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
    <children>
-       <Button layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#addCourse" prefHeight="49.0" prefWidth="150.0" text="Kurs anlegen" />
-       <Button layoutX="14.0" layoutY="109.0" mnemonicParsing="false" onAction="#delCourse" prefHeight="49.0" prefWidth="150.0" text="Kurs löschen" />
-       <Button layoutX="14.0" layoutY="184.0" mnemonicParsing="false" onAction="#addStudent" prefHeight="49.0" prefWidth="150.0" text="Student hinzufügen" />
-       <Button layoutX="14.0" layoutY="259.0" mnemonicParsing="false" onAction="#renderdelStudent" prefHeight="49.0" prefWidth="150.0" text="Student exmatrikulieren" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
+       <Button layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#showCourseCreator" prefHeight="49.0" prefWidth="150.0" text="Kurs anlegen" />
+       <Button layoutX="14.0" layoutY="109.0" mnemonicParsing="false" onAction="#showCourseDeleter" prefHeight="49.0" prefWidth="150.0" text="Kurs löschen" />
+       <Button layoutX="14.0" layoutY="184.0" mnemonicParsing="false" onAction="#showStudentCreator" prefHeight="49.0" prefWidth="150.0" text="Student hinzufügen" />
+       <Button layoutX="14.0" layoutY="259.0" mnemonicParsing="false" onAction="#showStudentDeleter" prefHeight="49.0" prefWidth="150.0" text="Student exmatrikulieren" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
        <Button layoutX="14.0" layoutY="334.0" mnemonicParsing="false" onAction="#refreshTable" prefHeight="49.0" prefWidth="150.0" text="Tabelle aktualisieren" />
 
       <TableView fx:id="tableview" layoutX="191.0" layoutY="34.0" prefHeight="457.0" prefWidth="642.0">

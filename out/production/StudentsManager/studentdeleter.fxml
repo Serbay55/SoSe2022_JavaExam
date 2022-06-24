@@ -9,6 +9,6 @@
    <children>
       <TextField fx:id="student_id_input" layoutX="67.0" layoutY="62.0" />
       <Text layoutX="59.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Geben Sie die Studenten-ID an" />
-      <Button fx:id="submitter" layoutX="70.0" layoutY="126.0" mnemonicParsing="false" onAction="#delStudent" text="Student exmatrikulieren" />
+      <Button fx:id="submitter" layoutX="70.0" layoutY="126.0" mnemonicParsing="false" onAction="#deleteStudent" text="Student exmatrikulieren" />
    </children>
 </AnchorPane>
