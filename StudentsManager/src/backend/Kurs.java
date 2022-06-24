@@ -17,7 +17,11 @@ public class Kurs {
 		this.raum = raum;
 	}
 
-
+	/**
+	 * Entfernt Sonderzeichen
+	 * @param ch char Array, aus dem die Sonderzeichen entfernt werden sollen
+	 * @return String ohne Sonderzeichen
+	 */
 	public String checkKursname(char[] ch){
 
 		StringBuilder strbuildregstud = new StringBuilder();
@@ -29,7 +33,11 @@ public class Kurs {
 		return strbuildregstud.toString();
 	}
 
-
+	/**
+	 * Prüft ob der Kursname bereits existiert.
+	 * @return false, falls Kursname noch nicht existiert und true, falls Kursname bereits existiert
+	 * @throws SQLException
+	 */
 	public boolean kursNameBelegt() throws SQLException{
 		ResultSet rs = Datenbankverbindung.runSQLquery("SELECT kurs_name FROM Kurs WHERE kurs_name = \""+this.getKursname()+"\"");
 		List<String> belegtekursnamen = new ArrayList<String>();
@@ -40,7 +48,11 @@ public class Kurs {
 		return belegtekursnamen.size() != 0;
 	}
 
-
+	/**
+	 * Prüft, ob der Kursraum schon von einem anderen Kurs belegt ist
+	 * @return false, falls der Kursraum noch nicht belegt ist und true, falls der Kursraum schon belegt ist
+	 * @throws SQLException
+	 */
 	public boolean kursRaumBelegt() throws SQLException {
 
 		if (this.getRaum().equals("online")){
@@ -58,7 +70,11 @@ public class Kurs {
 
 
 
-
+	/**
+	 * Entfernt falsche Zeichen aus Kursname und Kursraum
+	 * Prüft außerdem ob Länge von Kursname oder Kursraum 0 ist
+	 * @return String: Name des Attributes mit der Länge 0. Falls kein Problem vorliegt wird "keine" zurückgegeben
+	 */
 	public String checkData(){
 
 		this.kursname = this.checkKursname(this.getKursname().toCharArray());
@@ -77,7 +93,9 @@ public class Kurs {
 	}
 
 
-
+	/**
+	 * Speichert den Kurs in der Datenbank ab
+	 */
 	public void anlegenDB(){
 		try {
 			Datenbankverbindung.runSQL("INSERT INTO Kurs (kurs_name, kurs_raum) VALUES (\""+this.getKursname()+"\", \""+this.getRaum()+"\")");

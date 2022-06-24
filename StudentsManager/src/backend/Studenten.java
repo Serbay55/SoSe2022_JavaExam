@@ -44,7 +44,11 @@ public class Studenten {
 		this.raumkurs = raumkurs;
 	}
 
-
+	/**
+	 * Entfernt Sonderzeichen und Ziffern
+	 * @param ch char Array, aus dem die Sonderzeichen/Ziffern entfernt werden sollen
+	 * @return String ohne Sonderzeichen/Ziffern
+	 */
 	public String checkName(char[] ch){
 
 		StringBuilder strbuildregstud = new StringBuilder();
@@ -56,6 +60,12 @@ public class Studenten {
 		return strbuildregstud.toString();
 	}
 
+
+	/**
+	 * Entfernt Sonderzeichen
+	 * @param ch char Array, aus dem die Sonderzeichen entfernt werden sollen
+	 * @return String ohne Sonderzeichen
+	 */
 	public String checkCompany(char[] ch){
 
 		StringBuilder strbuildregstud = new StringBuilder();
@@ -67,6 +77,11 @@ public class Studenten {
 		return strbuildregstud.toString();
 	}
 
+	/**
+	 *
+	 * @param ch
+	 * @return
+	 */
 	public String checkID(char[] ch){
 
 		StringBuilder strbuildregstud = new StringBuilder();
@@ -78,6 +93,11 @@ public class Studenten {
 		return strbuildregstud.toString();
 	}
 
+	/**
+	 * Entfernt falsche Zeichen aus Vorname, Nachname und Firma.
+	 * Prüft außerdem ob Länge von Vorname, Nachname oder Firma 0 ist
+	 * @return String: Name des Attributes mit der Länge 0. Falls kein Problem vorliegt wird "keine" zurückgegeben
+	 */
 	public String checkData(){
 
 		this.vorname = this.checkName(this.getVorname().toCharArray());
@@ -103,7 +123,9 @@ public class Studenten {
 	}
 
 
-
+	/**
+	 * Speichert den Studenten in der Datenbank ab
+	 */
 	public void anlegenDB(){
 		try {
 			Datenbankverbindung.runSQL("INSERT INTO Studenten (vorname, nachname, Java_Skill, firma, kurs) VALUES (\""+this.getVorname()+"\", \""+this.getNachname()+"\", \""+this.getJSkill()+"\", \""+this.getFirma()+"\", \""+this.getKurs()+"\");");
