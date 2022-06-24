@@ -1,5 +1,10 @@
 package backend;
 
+import datenbankpaket.Datenbankverbindung;
+import javafx.scene.control.Alert;
+
+import java.sql.SQLException;
+
 public class Studenten {
 	int identificator;
 	String vorname;
@@ -37,6 +42,63 @@ public class Studenten {
 		this.kurs = kurs;
 		this.identificator = identificator;
 		this.raumkurs = raumkurs;
+	}
+
+
+	public String checkName(char[] ch){
+
+		StringBuilder strbuildregstud = new StringBuilder();
+		for(char c : ch) {
+			if(Character.isAlphabetic(c) || Character.isSpace(c)) {
+				strbuildregstud.append(c);
+			}
+		}
+		return strbuildregstud.toString();
+	}
+
+	public String checkCompany(char[] ch){
+
+		StringBuilder strbuildregstud = new StringBuilder();
+		for(char c : ch) {
+			if(Character.isAlphabetic(c) || Character.isDigit(c) || Character.isSpace(c)) {
+				strbuildregstud.append(c);
+			}
+		}
+		return strbuildregstud.toString();
+	}
+
+	public String checkData(){
+
+		this.vorname = this.checkName(this.getVorname().toCharArray());
+		this.nachname = this.checkName(this.getNachname().toCharArray());
+		this.firma = this.checkCompany(this.getFirma().toCharArray());
+
+		if(this.vorname.length() == 0){
+			return "Vorname";
+		}
+		else if (this.nachname.length() == 0){
+			return "Nachname";
+		}
+		else if (this.firma.length() == 0) {
+			return "Firma";
+		}
+		else if (this.kurs == null) {
+			return "Kurs";
+		}
+		else {
+			return "keine";
+		}
+
+	}
+
+
+
+	public void toDatabase(){
+		try {
+			Datenbankverbindung.runSQL("INSERT INTO Studenten (vorname, nachname, Java_Skill, firma, kurs) VALUES (\""+this.getVorname()+"\", \""+this.getNachname()+"\", \""+this.getJSkill()+"\", \""+this.getFirma()+"\", \""+this.getKurs()+"\");");
+		} catch (SQLException z) {
+			throw new RuntimeException(z);
+		}
 	}
 	
 	public int getIdentificator() {
