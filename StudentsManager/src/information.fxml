@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="607.0" prefWidth="722.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
+   <children>
+      <TextArea layoutX="14.0" layoutY="16.0" prefHeight="582.0" prefWidth="698.0" text="Bedienung:&#10;   - Bedienung per Maus und Tastatur möglich&#10;   - Mit Pfeiltasten/ Tabulatortaste kann zwischen den einzelnen Menüpunkten gewechselt werden.&#10;   - Mit der Enter-Taste kann die Aktion eines Buttons ausgeführt werden.&#10;   - Mit der Leertaste lassen sich die Dropdown-Listen öffnen&#10;&#10;Kurs anlegen: &#10;   1. Auf den Button 'Kurs anlegen klicken.&#10;   2. Im erscheinenden Fenster den Namen des neuen Kurses eintippen. Achtung es sind keine Sonderzeichen erlaubt.&#10;   3. Einen Kursraum aus der Dropdown-Liste auswählen. &#10;       Achtung, der Kursraum darf nicht schon von einem anderen Kurs beleg sein.&#10;   4. Anlage mit einem Klick auf 'Kurs anlegen' ausführen'.&#10;&#10;Kurs löschen:&#10;   1. Auf den Button 'Kurs löschen' klicken.&#10;   2. Im erscheinenden Fenster den Kurs aus der Dropdown-Liste wählen.&#10;   3. Löschung mit einem Klick auf 'Kurs löschen' ausführen.&#10;   4. Achtung: Alle Studenten, die noch diesem Kurs zugeordnet sind werden automatisch exmatrikuliert.&#10;&#10;Student anlegen:&#10;   1. Auf den Button 'Student anlegen' klicken.&#10;   2. Im erscheinenden Fenster folgende Daten eintragen:&#10;      a) Vorname und Nachnachname müssen aus Buchstaben bestehen&#10;      b) Firma muss aus Buchstaben oder Zahlen bestehen&#10;      c) Kurs aus der Dropdown-Liste auswählen&#10;      d) Java-Skill mit dem Schieberegler einstellen&#10;   3. Anlage mit einem Klick auf 'Student anlegen' ausführen.&#10;&#10;Student exmatrikulieren:&#10;   1. Auf den Button 'Student exmatrikulieren' klicken.&#10;   2. Im erscheinenden Fenster die Studenten-ID, des zu löschenden Studenten eingeben&#10;   3. Löschung mit einem Klick auf 'Student exmatrikulieren' ausführen.&#10;&#10;Tabelle laden/ aktualisieren:&#10;   - Mit einem Klick auf den Button 'Tabelle laden' wird die Tabelle in der Bildmitte aktualisiert und es werden alle Studenten&#10;      angezeigt, die aktuell im System hinterlegt sind.&#10;&#10;Kurs filtern:&#10;   1. Im Dropdown-Menü eine Kurs auswählen.&#10;   2. Auf den Button 'Kurs filtern' klicken.&#10;   3. In der Tabelle werden jetzt nur noch Studenten angezeigt, die dem ausgewählten Kurs zugeordnet sind.&#10;   4. Ein Klick auf den Butten 'Tabelle laden' zeigt wieder alle Studenten an, die im System hinterlegt sind.&#10;">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></TextArea>
+   </children>
+</AnchorPane>

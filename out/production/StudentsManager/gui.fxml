@@ -4,17 +4,18 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="849.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="651.0" prefWidth="849.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="backend.Controller">
    <children>
-       <Button layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#showCourseCreator" prefHeight="49.0" prefWidth="150.0" text="Kurs anlegen" />
-       <Button layoutX="14.0" layoutY="109.0" mnemonicParsing="false" onAction="#showCourseDeleter" prefHeight="49.0" prefWidth="150.0" text="Kurs löschen" />
-       <Button layoutX="14.0" layoutY="184.0" mnemonicParsing="false" onAction="#showStudentCreator" prefHeight="49.0" prefWidth="150.0" text="Student hinzufügen" />
-       <Button layoutX="14.0" layoutY="259.0" mnemonicParsing="false" onAction="#showStudentDeleter" prefHeight="49.0" prefWidth="150.0" text="Student exmatrikulieren" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
-       <Button layoutX="14.0" layoutY="334.0" mnemonicParsing="false" onAction="#refreshTable" prefHeight="49.0" prefWidth="150.0" text="Tabelle aktualisieren" />
+       <Button layoutX="15.0" layoutY="74.0" mnemonicParsing="false" onAction="#showCourseCreator" prefHeight="49.0" prefWidth="150.0" text="Kurs anlegen" />
+       <Button layoutX="15.0" layoutY="149.0" mnemonicParsing="false" onAction="#showCourseDeleter" prefHeight="49.0" prefWidth="150.0" text="Kurs löschen" />
+       <Button layoutX="15.0" layoutY="276.0" mnemonicParsing="false" onAction="#showStudentCreator" prefHeight="49.0" prefWidth="150.0" text="Student anlegen" />
+       <Button layoutX="15.0" layoutY="351.0" mnemonicParsing="false" onAction="#showStudentDeleter" prefHeight="49.0" prefWidth="150.0" text="Student exmatrikulieren" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
+       <Button layoutX="15.0" layoutY="495.0" mnemonicParsing="false" onAction="#refreshTable" prefHeight="49.0" prefWidth="150.0" text="Tabelle laden" />
 
-      <TableView fx:id="tableview" layoutX="191.0" layoutY="34.0" prefHeight="457.0" prefWidth="642.0">
+      <TableView fx:id="tableview" layoutX="192.0" layoutY="47.0" prefHeight="498.0" prefWidth="642.0">
         <columns>
             <TableColumn fx:id="identificator" prefWidth="75.0" text="ID" />
             <TableColumn fx:id="firstNameColumn" prefWidth="75.0" text="Vorname" />
@@ -28,8 +29,11 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <ChoiceBox fx:id="MMCBOX" layoutX="191.0" layoutY="502.0" prefWidth="150.0" />
-      <Button layoutX="359.0" layoutY="502.0" mnemonicParsing="false" onAction="#sortList" text="Kurs filtern" />
-      <Button layoutX="15.0" layoutY="400.0" prefWidth="150.0" mnemonicParsing="false" onAction="#openHomescreen" text="Refresh Hauptmenü" />
+      <ChoiceBox fx:id="MMCBOX" layoutX="192.0" layoutY="579.0" prefWidth="150.0" />
+      <Button layoutX="360.0" layoutY="579.0" mnemonicParsing="false" onAction="#sortList" text="Kurs filtern" />
+      <Button layoutX="806.0" layoutY="14.0" mnemonicParsing="false" onAction="#showHelp" prefHeight="13.0" prefWidth="26.0" text="?">
+         <tooltip>
+            <Tooltip text="Hilfe" />
+         </tooltip></Button>
    </children>
 </AnchorPane>

@@ -174,6 +174,12 @@ public class Controller{
 
 
 
+	/**
+	 * Legt einen neuen Studenten an und gibt eine Erfolgs- oder Fehlermeldung aus
+	 * @param x ActionEvent, das durch Klicken auf button 'Student anlegen' ausgelöst wird
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	public void createStudent(ActionEvent x) throws Exception {
 
 		String firstname = vinp.getText();
@@ -223,7 +229,12 @@ public class Controller{
 		stage.setTitle("Student exmatrikulieren");
 		stage.showAndWait();
 	}
-	
+
+	/**
+	 * Löscht einen Studenten und gibt Erfogls- oder Fehlermeldungen aus
+	 * @param e Int: ActionEvent, das durch Klicken auf button 'Student exmatrikulieren' ausgelöst wird
+	 * @throws SQLException
+	 */
 	public void deleteStudent(ActionEvent e) throws SQLException {
 		String id_selection = student_id_input.getText();
 		char[] ch  = id_selection.toCharArray();
@@ -240,13 +251,7 @@ public class Controller{
 
 			Stage stage = (Stage) submitter.getScene().getWindow();
 			stage.close();
-			/*
-			try {
-				refreshTable();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-*/
+
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Löschung Erfolgreich!");
 			alert.setContentText("Der Student '" + res.getString("vorname") + " " + res.getString("vorname") + "' wurde erfolgreich gelöscht!");
@@ -276,7 +281,12 @@ public class Controller{
 
 	}
 
-
+	/**
+	 * Legt einen neuen Kurs an und gibt eine Erfolgs- oder Fehlermeldung aus
+	 * @param i ActionEvent, das durch Klicken auf button 'Kurs anlegen' ausgelöst wird
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	public void createCourse(ActionEvent i) throws IOException, SQLException {
 		String kursraum = roomcb.getValue();
 		String kursname = coursesubmit.getText();
@@ -332,7 +342,14 @@ public class Controller{
 		stage.setTitle("Kurs loeschen");
 		stage.showAndWait();
 	}
-	
+
+
+
+	/**
+	 * Löscht den Kurs und gibt eine Erfogls- oder Fehlermeldungen aus
+	 * @param e ActionEvent, das durch Klicken auf button 'Kurs löschen' ausgelöst wird
+	 * @throws SQLException
+	 */
 	public void deleteCourse(ActionEvent e) throws SQLException {
 		String courseselection = myChoiceBox.getValue();
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs WHERE kurs_name =\""+courseselection+"\"");
@@ -377,19 +394,12 @@ public class Controller{
 	 */
 	public void refreshTable() throws Exception {
 		studentenliste.removeAll(studentenliste);
-		studentenliste = null;
-		if(studentenliste == null) {
-			tableview.getItems().clear();
-			studentenliste = new ArrayList<Studenten>();
-			tableview.getItems().addAll(studentenlister());
-		}
-		
-		MMCBOX = null;
-		if(MMCBOX == null) {
-			MMCBOX = new ChoiceBox<String>(FXCollections.observableArrayList(coursesList()));
-		}
-		
-		
+
+		tableview.getItems().clear();
+		tableview.getItems().addAll(studentenlister());
+
+		MMCBOX.setValue(null);
+
 	}
 
 
@@ -420,33 +430,25 @@ public class Controller{
 	 */
 	public void sortList(ActionEvent e) throws SQLException {
 		studentenliste.removeAll(studentenliste);
-		studentenliste = null;
-		if(studentenliste == null) {
-			tableview.getItems().clear();
-			studentenliste = new ArrayList<Studenten>();
-			tableview.getItems().addAll(sortedList());
-		}
+
+		tableview.getItems().clear();
+		tableview.getItems().addAll(sortedList());
 	}
 
 
 	/**
-	 * Setzt die Anwendung auf den Startzustand zurück
-	 * @param e ActionEvent, das durch Klicken auf button 'Refresh Hauptmenü' ausgelöst wird
-	 * @throws Exception
+	 * Öffnet das Hilfe-Menü
+
+	 * @throws IOException
+	 * @throws SQLException
 	 */
-	public void openHomescreen(ActionEvent e) throws Exception {
-		Stage newStage;
-		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
-		Scene newScene = new Scene(root);
-		newStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
-		newStage.setScene(newScene);
-		newStage.setTitle("University Management");
-		newStage.show();
-		refreshTable();
-		
-		
+	public void showHelp() throws IOException {
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("information.fxml"));
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.setTitle("Hilfe");
+		stage.showAndWait();
 	}
-	
 
 
 }
