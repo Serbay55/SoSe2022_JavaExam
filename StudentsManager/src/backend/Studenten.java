@@ -44,6 +44,7 @@ public class Studenten {
 		this.raumkurs = raumkurs;
 	}
 
+
 	/**
 	 * Entfernt Sonderzeichen und Ziffern
 	 * @param ch char Array, aus dem die Sonderzeichen/Ziffern entfernt werden sollen
@@ -77,6 +78,7 @@ public class Studenten {
 		return strbuildregstud.toString();
 	}
 
+
 	/**
 	 *
 	 * @param ch
@@ -92,6 +94,7 @@ public class Studenten {
 		}
 		return strbuildregstud.toString();
 	}
+
 
 	/**
 	 * Entfernt falsche Zeichen aus Vorname, Nachname und Firma.

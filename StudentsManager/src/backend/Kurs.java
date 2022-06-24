@@ -33,6 +33,7 @@ public class Kurs {
 		return strbuildregstud.toString();
 	}
 
+
 	/**
 	 * Prüft ob der Kursname bereits existiert.
 	 * @return false, falls Kursname noch nicht existiert und true, falls Kursname bereits existiert
@@ -47,6 +48,7 @@ public class Kurs {
 
 		return belegtekursnamen.size() != 0;
 	}
+
 
 	/**
 	 * Prüft, ob der Kursraum schon von einem anderen Kurs belegt ist
@@ -67,7 +69,6 @@ public class Kurs {
 			return belegteKursraeume.size() != 0;
 		}
 	}
-
 
 
 	/**
@@ -103,9 +104,6 @@ public class Kurs {
 			throw new RuntimeException(x);
 		}
 	}
-
-
-
 
 
 

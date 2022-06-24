@@ -57,7 +57,11 @@ public class Controller{
 	
 	private static List<Studenten> studentenliste;
 	public static Parent rootNew = null;
-	
+
+	/**
+	 * Initialisiert die Tabellen und Daten beim Start der Anwendung
+	 * @throws SQLException
+	 */
 	@FXML public void initialize() throws SQLException {
 		ResultSet kurse = Datenbankverbindung.runSQLquery("SELECT kurs_name FROM Kurs");
 		if(roomcb != null) {
@@ -84,12 +88,16 @@ public class Controller{
 			kursColumn.setCellValueFactory(new PropertyValueFactory<Studenten, String>("kurs"));
 			kursraumColumn.setCellValueFactory(new PropertyValueFactory<Studenten, String>("raumkurs"));
 		}
-		
+
 		
 	}
-	
 
-	
+
+	/**
+	 * Erzeugt eine Liste mit allen in der DB gespeicherten Räumen
+	 * @return StringListe mit allen Räumen aus der DB
+	 * @throws SQLException
+	 */
 	public static List<String> roomsList() throws SQLException {
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kursraeume");
 		List<String> rooms = new ArrayList<String>();
@@ -99,7 +107,13 @@ public class Controller{
 		return rooms;
 		
 	}
-	
+
+
+	/**
+	 * Erzeugt eine Liste mit allen in der DB gespeicherten Kursen
+	 * @return StringListe mit allen Kursen aus der DB
+	 * @throws SQLException
+	 */
 	public static List<String> coursesList() throws SQLException{
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs");
 		List<String> courses = new ArrayList<String>();
@@ -110,14 +124,26 @@ public class Controller{
 		
 	}
 
-	
+
+	/**
+	 * Gibt den aktuellen Raum für einen bestimmten Kurs an
+	 * @param s String: Kursname, der ausgewertet werden soll
+	 * @return String: Kursraum, der aktuell in der DB gespeichert ist
+	 * @throws SQLException
+	 */
 	public static String raumGetter(String s) throws SQLException {
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Kurs WHERE kurs_name = \""+s+"\"");
 		String raum = res.getString("kurs_raum");
 		return raum;
 		
 	}
-	
+
+
+	/**
+	 * Gibt eine Liste mit allen Studenten aus der DB an
+	 * @return StringListe mit allen Studenten, die in der DB gespeichert sind
+	 * @throws SQLException
+	 */
 	public static List<Studenten> studentenlister() throws SQLException {
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten");
 		List<Studenten> studentenList = new ArrayList<Studenten>();
@@ -130,7 +156,12 @@ public class Controller{
 	}
 
 
-
+	/**
+	 * Öffnet das Menü zum Anlegen eines Studenten
+	 * @param e ActionEvent, das durch Klicken auf button 'Student hinzufügen' ausgelöst wird
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	public void showStudentCreator(ActionEvent e) throws IOException, SQLException {
 
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("studentCreator.fxml"));
@@ -179,7 +210,12 @@ public class Controller{
 
 	}
 
-	
+	/**
+	 * Öffnet das Menü zum Löschen eines Studenten
+	 * @param e ActionEvent, das durch Klicken auf button 'Student exmatrikulieren' ausgelöst wird
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	public void showStudentDeleter(ActionEvent e) throws IOException {
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("studentdeleter.fxml"));
 		Stage stage = new Stage();
@@ -204,7 +240,13 @@ public class Controller{
 
 			Stage stage = (Stage) submitter.getScene().getWindow();
 			stage.close();
-
+			/*
+			try {
+				refreshTable();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+*/
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Löschung Erfolgreich!");
 			alert.setContentText("Der Student '" + res.getString("vorname") + " " + res.getString("vorname") + "' wurde erfolgreich gelöscht!");
@@ -218,7 +260,12 @@ public class Controller{
 		
 	}
 
-
+	/**
+	 * Öffnet das Menü zum Anlegen eines Kurses
+	 * @param e ActionEvent, das durch Klicken auf button 'Kurs anlegen' ausgelöst wird
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	public void showCourseCreator(ActionEvent e) throws IOException, SQLException {
 
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("courseCreator.fxml"));
@@ -272,7 +319,12 @@ public class Controller{
 
 	}
 
-
+	/**
+	 * Öffnet das Menü zum Löschen eines Kursen
+	 * @param e ActionEvent, das durch Klicken auf button 'Kurs löschen' ausgelöst wird
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	public void showCourseDeleter(ActionEvent e) throws IOException {
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursedeleter.fxml"));
 		Stage stage = new Stage();
@@ -317,11 +369,13 @@ public class Controller{
 		}
 
 	}
-	
 
 
-	
-	public void refreshTable(ActionEvent e) throws Exception {
+	/**
+	 * Aktualisiert die in der GUI angezeigten Studenten anhand der aktuellen Daten in der DB
+	 * @throws Exception
+	 */
+	public void refreshTable() throws Exception {
 		studentenliste.removeAll(studentenliste);
 		studentenliste = null;
 		if(studentenliste == null) {
@@ -337,7 +391,13 @@ public class Controller{
 		
 		
 	}
-	
+
+
+	/**
+	 * Erzeugt eine nach Kursen gefilterte Studtenliste anhand des Wertes in der GUI
+	 * @return StudentenListe mit nach Kursen gefilterten Studenten
+	 * @throws SQLException
+	 */
 	public List<Studenten> sortedList() throws SQLException{
 		String mmcbox = MMCBOX.getValue();
 		ResultSet res = Datenbankverbindung.runSQLquery("SELECT * FROM Studenten WHERE kurs = \""+mmcbox+"\"");
@@ -351,7 +411,13 @@ public class Controller{
 		
 		
 	}
-	
+
+
+	/**
+	 * Zeigt die gefilterten Studenten in der GUI an
+	 * @param e ActionEvent, das durch Klicken auf button 'Kurs filtern' ausgelöst wird
+	 * @throws SQLException
+	 */
 	public void sortList(ActionEvent e) throws SQLException {
 		studentenliste.removeAll(studentenliste);
 		studentenliste = null;
@@ -361,12 +427,13 @@ public class Controller{
 			tableview.getItems().addAll(sortedList());
 		}
 	}
-	
 
 
-	
-
-	
+	/**
+	 * Setzt die Anwendung auf den Startzustand zurück
+	 * @param e ActionEvent, das durch Klicken auf button 'Refresh Hauptmenü' ausgelöst wird
+	 * @throws Exception
+	 */
 	public void openHomescreen(ActionEvent e) throws Exception {
 		Stage newStage;
 		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("gui.fxml"));
@@ -375,7 +442,7 @@ public class Controller{
 		newStage.setScene(newScene);
 		newStage.setTitle("University Management");
 		newStage.show();
-		refreshTable(e);
+		refreshTable();
 		
 		
 	}
