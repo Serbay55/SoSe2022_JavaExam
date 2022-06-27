@@ -223,7 +223,7 @@ public class Controller{
 	 * @throws SQLException
 	 */
 	public void showStudentDeleter(ActionEvent e) throws IOException {
-		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("studentdeleter.fxml"));
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("studentDeleter.fxml"));
 		Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.setTitle("Student exmatrikulieren");
@@ -336,7 +336,7 @@ public class Controller{
 	 * @throws SQLException
 	 */
 	public void showCourseDeleter(ActionEvent e) throws IOException {
-		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("coursedeleter.fxml"));
+		Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("courseDeleter.fxml"));
 		Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.setTitle("Kurs loeschen");
